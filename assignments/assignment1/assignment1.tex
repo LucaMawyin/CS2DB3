@@ -1,0 +1,253 @@
+%% Determines the type of document (including standard settings for layout).
+\documentclass[letterpaper]{article}
+
+
+
+%% Package to control the size of a page: the standard margins used by LaTeX are
+%% very wide!
+\usepackage[margin=1in]{geometry}
+
+
+%% Packages add functionality to the document. The AMS packages are standard
+%% packages to support various mathematical notations. AMS stands for American
+%% Mathematical Society, the organization that maintains these packages.
+\usepackage{amsmath,amsthm,amssymb}
+
+%% Theorems-like environments using functionality provided by amsthm.
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+    %% [section] at the end specifies that theorems should be numbered
+    %% per-section: Section x starts with theorem-like x.1 and so on, ...
+\newtheorem{proposition}[theorem]{Proposition}
+    %% [theorem] in the middle specifies: use the same counter as the theorem
+    %% environment: here we number all theorem-like environments consecutively.
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{remark}[theorem]{Remark}
+
+
+%% Support for nicely formatted tables.
+\usepackage{booktabs}
+
+
+%% Support for colors & colors in tables.
+\usepackage[table]{xcolor}
+
+% Seven colors safe for use color blindness.
+% Colors taken from doi:10.1038/nmeth.1618.
+\definecolor{cbOrange}{RGB}{230,159,0}
+\definecolor{cbSkyBlue}{RGB}{86,180,233}
+\definecolor{cbBluishGreen}{RGB}{0,158,115}
+\definecolor{cbYellow}{RGB}{240,228,66}
+\definecolor{cbBlue}{RGB}{0,114,178}
+\definecolor{cbVermillion}{RGB}{213,94,0}
+\definecolor{cbReddischPurple}{RGB}{204,121,167}
+
+
+%% Notation used in this document.
+\newcommand{\n}{\mathbf{n}} %% Num. Replicas.
+\newcommand{\f}{\mathbf{f}} %% Num. Faulty Replicas.
+
+%% Misc. Math notation.
+\newcommand{\BigO}{\mathcal{O}}
+\newcommand{\abs}[1]{\lvert #1 \rvert}
+\newcommand{\AName}[1]{\textsc{#1}}
+\newcommand{\Var}[1]{\texttt{#1}}
+
+
+%% Algorithms.
+\usepackage{algorithm}
+\usepackage[noend]{algorithmic}
+\newcommand{\GETS}{:=}
+
+
+%% Formatting SI-units.
+\usepackage{siunitx}
+\sisetup{per-mode=symbol}
+
+
+%% TikZ: for creating figures.
+\usepackage{tikz}
+
+%% Configuration for figures: Nicer arrows.
+\usetikzlibrary{arrows.meta}
+\tikzset{>=Stealth}
+
+
+%% pgfplots: drawing plots using TikZ.
+\usepackage{pgfplots}
+%% Configuration for plots: Use color-blind friendly colors.
+\pgfplotscreateplotcyclelist{cbSafeList}{
+    very thick,solid,cbOrange,every mark/.append style={solid},mark=*\\
+    very thick,solid,cbSkyBlue,every mark/.append style={solid},mark=*\\
+    very thick,solid,cbBluishGreen,every mark/.append style={solid},mark=*\\
+    very thick,solid,cbYellow,every mark/.append style={solid},mark=*\\
+    very thick,solid,cbBlue,every mark/.append style={solid},mark=*\\
+    very thick,solid,cbVermillion,every mark/.append style={solid},mark=*\\
+    very thick,solid,cbReddischPurple,every mark/.append style={solid},mark=*\\
+    very thick,solid,black,every mark/.append style={solid},mark=*\\
+}
+\pgfplotsset{
+    legend style={font=\small},
+    compat=1.16,
+    width=260pt,
+    height=140pt,
+    legend cell align=left,
+    xlabel near ticks,
+    ylabel near ticks,
+    every axis/.append style={
+        cycle list name=cbSafeList,
+        ymin=0,
+        enlargelimits=0.05,
+        mark size=1pt,
+        ylabel style={align=center},
+        xlabel style={align=center},
+        title style={align=center}
+    }
+}
+
+%% PgfplotsTable: loading data files to use with pgfplots.
+\usepackage{pgfplotstable}
+
+
+%% Support for hyperlinks and urls. The setting ``colorlinks'' sets how links
+%% are shown in the document (with a color, without underline). We put hyperref
+%% last---it has a tendency to break other packages when loaded before them.
+\usepackage[colorlinks]{hyperref}
+\usepackage{graphicx}
+\usepackage{pgffor}
+\usepackage{caption}
+\usepackage{tabularx}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+
+
+\begin{document}
+
+%% First the meta-data of the doucment: title,
+
+\begin{titlepage}
+    \centering
+    \vspace*{3cm}
+    
+    {\Huge COMPSCI 2DB3 Assignment 1}\\[2cm]
+    
+    {\large Luca Mawyin}\\[0.5cm]
+    
+    {\large Dr. Jelle Hellings}\\[0.5cm]
+
+    {\large \today}\\[2cm]
+
+    {\Large McMaster University}
+
+    \vfill
+    \begin{flushleft}
+
+        {\large \textbf{Student Number: }400531739}\\[0.5cm]
+        {\large \textbf{MacID: }mawyinl}
+    \end{flushleft}
+
+\end{titlepage}
+
+\stepcounter{section}
+\section*{P.\thesection}
+
+\subsection*{Requirements}
+\begin{itemize}
+    \item User has attributes: username, email, password, and optional location
+    \item Users can follow other users, with stored date of following
+    \item Types of users: admin, disabled, basic, normal
+    \item Basic users can become normal users if approved by an admin
+    \item Only normal users/admins can create posts
+    \item Admins can remove posts
+\end{itemize}
+
+\subsection*{Ignored Details}
+\begin{itemize}
+    \item Length of passwords as hash salt combinations
+    \item Validation of email address via validation link
+    \item Conversion of basic user to normal user upon admin approval
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{figures/a1p\thesection.png}
+    \caption{User ER Diagram}
+\end{figure}
+
+A constraint for the given ER diagram is the attributes of the user. As the problem did not state a user ID attribute, nor that the username is to be unique, the only possible identifier for a user is the email. 
+
+Another constraint which affected the representation in the diagram is the different types of users. Representing the basic user is difficult, as it can transform into a normal user. However, it is not possible to represent this accurately, as the transformation depends on whether or not the admin approves the basic user.
+
+\stepcounter{section}
+\section*{P.\thesection}
+
+\subsection*{Requirements}
+\begin{itemize}
+    \item Recipe has attributes: title, prepare duration, number of servings, ingredients, and instructions.
+    \item Ingredient has attributes: unit, measurement
+    \item Ingredient can be replaced by one or more ingredients, with optional impact on recipe.
+    \item Recipe belongs to zero or more categories of hierarchical order.
+    \item Cookie belongs to pastry belongs to baking.
+\end{itemize}
+
+\subsection*{Ignored Details}
+\begin{itemize}
+    \item Searching for recipes based on ingredients available.
+    \item Validation for whether or not an ingredient can be replaced.
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{figures/a1p\thesection.png}
+    \caption{Recipe ER Diagram}
+\end{figure}
+
+A constraint in the given ER diagram that was difficult to represent is the ingredients. An ingredient in a recipe can be replaced, which is easily represented by a \textit{Replaced By} relation, with an optional impact on the recipe. However, some replacements may only be used with the presence of another ingredient. Due to this constraint, it is difficult to represent a replacement ingredient in this conditional context.
+
+Another contraint is identifying attributes for entities. The problem does not state any unique attributes for any entities in the problem, and therefore it may be difficult to refer to specific instances of such.
+\newpage
+\stepcounter{section}
+\section*{P.\thesection}
+
+\subsection*{Requirements}
+\begin{itemize}
+    \item Thread has attributes: title, description, publication date.
+    \item Recipe is entity with no explicit attributes.
+    \item User can rate recipe with attributes difficulty and quality.
+    \item Article has attributes: title (unique), body, publication date.
+    \item Article can reference zero or more recipes.
+    \item Reaction has attributes: text, publication date, link.
+    \item Reaction link links to article, recipt, thread, or other reaction.
+    \item User can write reaction or article. 
+    \item User can flag a thread with a keyword.
+    \item User can upvote or downvote a thread.
+    \item Admin is a type of user.
+    \item Admin can close or hide a thread.
+\end{itemize}
+
+\subsection*{Ignored Details}
+\begin{itemize}
+    \item Scale or ratings for difficulty and quality of recipes.
+    \item Checking whether or not a thread is closed before allowing reactions.
+    \item Sorting threads in search results based on number of flags.
+    \item Specification of voting allowed on threads (i.e. upvote or downvote only).
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{figures/a1p\thesection.png}
+    \caption{Forum ER Diagram}
+\end{figure}
+
+One constraint on the diagram is reactions to threads. The problem states that users can only react to a thread if it is not closed, however there is no way to represent this condition in the ER diagram.
+
+Another constraint is users reacting to other types of posts (articles, recipes, threads, reactions). The problem states that the user can react to everything, with the reaction containing a link to the post being reacted to. However, it is confusing to represent both the relation of the link to the post being reacted to, and the relation of the reaction to the post being reacted to. The diagram represents the link relation only in order to avoid confusion and redundancy.
+
+The problem also states that the more a thread is flagged with a certain keyword, the higher the thread will show up in search results. Given this condition, it is difficult to represent in the ER diagram, as it is not logistically feasible to represent a thread appearing higher in a search result given the number of flags.
+
+\end{document}
