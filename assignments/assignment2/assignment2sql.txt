@@ -1,0 +1,105 @@
+CREATE TABLE Person (
+    pid INT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE Publisher (
+    name VARCHAR(255) PRIMARY KEY
+);
+
+CREATE TABLE Book (
+    ISBN VARCHAR(20) PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    year INT,
+    edition SMALLINT,
+    publisher_name VARCHAR(255),
+    FOREIGN KEY (publisher_name) REFERENCES Publisher(name)
+);
+
+-- Cannot represent weak entity in SQL 
+-- Representing Website and Recipe as separate tables with foreign keys referencing Book(ISBN)
+CREATE TABLE Website (
+    ISBN VARCHAR(20) NOT NULL,
+    url VARCHAR(255) NOT NULL,
+    PRIMARY KEY (ISBN, url),
+    FOREIGN KEY (ISBN) REFERENCES Book(ISBN)
+);
+
+
+-- Cannot represent ISA relationship in SQL 
+-- Representing EBook and PrintBook as separate tables with foreign keys referencing Book(ISBN)
+CREATE TABLE EBook (
+    ISBN VARCHAR(20) PRIMARY KEY,
+    format VARCHAR(50),
+    FOREIGN KEY (ISBN) REFERENCES Book(ISBN)
+);
+
+CREATE TABLE PrintBook (
+    ISBN VARCHAR(20) PRIMARY KEY,
+    weight INT,
+    type VARCHAR(255),
+    EVersion VARCHAR(20),
+    FOREIGN KEY (ISBN) REFERENCES Book(ISBN),
+    FOREIGN KEY (EVersion) REFERENCES EBook(ISBN)
+);
+
+CREATE TABLE authorOf (
+    pid INT NOT NULL,
+    ISBN VARCHAR(20) NOT NULL,
+    rank INT,
+    PRIMARY KEY (pid, ISBN),
+    FOREIGN KEY (pid) REFERENCES Person(pid),
+    FOREIGN KEY (ISBN) REFERENCES Book(ISBN)
+);
+
+CREATE TABLE Recipe (
+    ISBN VARCHAR(20) NOT NULL,
+    title VARCHAR(255) NOT NULL,
+    time INT,
+    PRIMARY KEY (ISBN, title),
+    FOREIGN KEY (ISBN) REFERENCES Book(ISBN)
+);
+
+CREATE TABLE usedBy (
+    recipe_ISBN VARCHAR(20) NOT NULL,
+    recipe_title VARCHAR(255) NOT NULL,
+    ingredient_ISBN VARCHAR(20) NOT NULL,
+    ingredient_title VARCHAR(255) NOT NULL,
+    PRIMARY KEY (recipe_ISBN, recipe_title, ingredient_ISBN, ingredient_title),
+    FOREIGN KEY (recipe_ISBN, recipe_title) REFERENCES Recipe(ISBN, title),
+    FOREIGN KEY (ingredient_ISBN, ingredient_title) REFERENCES Recipe(ISBN, title)
+);
+
+-- REVIEWS AND RECOMMENDATIONS --
+
+CREATE TABLE Review(
+    pid INT NOT NULL,
+    ISBN VARCHAR(20) NOT NULL,
+    score SMALLINT CHECK (score >= 0 and score <= 10), 
+    last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    description TEXT,
+    PRIMARY KEY (pid, ISBN),
+    FOREIGN KEY (pid) REFERENCES Person(pid),
+    FOREIGN KEY (ISBN) REFERENCES Book(ISBN)
+);
+
+CREATE TABLE ReviewVote(
+    pid INT NOT NULL,
+    rpid INT NOT NULL,
+    risbn VARCHAR(20) NOT NULL,
+    up BOOLEAN DEFAULT FALSE,
+    FOREIGN KEY (rpid, risbn) REFERENCES Review(pid, ISBN),
+    FOREIGN KEY (pid) REFERENCES Person(pid),
+    PRIMARY KEY (rpid, risbn)
+);
+
+CREATE TABLE Recommend(
+    pid INT NOT NULL,
+    friend_pid INT NOT NULL,
+    recipe_ISBN VARCHAR(20) NOT NULL,
+    description TEXT,
+    FOREIGN KEY (pid) REFERENCES Person(pid),
+    FOREIGN KEY (friend_pid) REFERENCES Person(pid),
+    FOREIGN KEY (recipe_ISBN) REFERENCES Recipe(ISBN),
+    PRIMARY KEY (pid, friend_pid, recipe_ISBN)
+);
