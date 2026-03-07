@@ -1,0 +1,184 @@
+--
+-- Instructions
+-- 
+-- Copy this file to the server:
+--     scp example_db.txt macid@cs2db3.cas.mcmaster.ca:~/example_db.txt
+--
+-- Login to the server:
+--     ssh macid@cs2db3.cas.mcmaster.ca
+--
+-- After login:
+-- Check whether file is copied correctly:
+--     ls
+-- should list example_db.txt
+--
+-- Then let DB2 execute the SQL commands in this file:
+--     db2 -tvf example_db.txt
+-- (the options instruct:
+--   -t: use `;' for statement termination;
+--   -v: give verbose feedback;
+--   -f: read commands from this file).
+--
+--
+-- Alternatively: copy the content of this file to a DBeaver SQL Console and
+-- execute all statements (excluding the `connect to cs2db3' statement below).
+--
+
+connect to cs2db3;
+
+-- Uncomment to remove previous versions of the tables:
+-- DROP TABLE review;
+-- DROP TABLE product;
+-- DROP TABLE ingredient;
+-- DROP table instructions;
+-- DROP TABLE recipe;
+
+
+CREATE TABLE recipe
+(
+    rid INT NOT NULL PRIMARY KEY,
+    title VARCHAR(100) NOT NULL,
+    uid INT NOT NULL,
+    when TIMESTAMP NOT NULL
+);
+
+INSERT INTO recipe VALUES
+    (1, 'Oliebollen', 1, '20251231'),
+	(2, 'Basic Cake', 2, '20260113'),
+    (3, 'Apple Pie', 1, '20260203'),
+    (4, 'Basic Cake', 2, '20260201'),
+    (5, 'Fried Chicken', 3, '20260401'),
+    (6, 'Kruimelvlaai', 1, '20260517'),
+    (7, 'Pumkin Pie', 4, '20261012'),
+	(8, 'Basic Bread', 1, '20261111');
+
+
+CREATE TABLE instructions
+(
+    rid INT NOT NULL REFERENCES recipe,
+    step INT NOT NULL,
+    description CLOB NOT NULL,
+    PRIMARY KEY(rid, step)
+);
+
+
+INSERT INTO instructions VALUES
+    (2, 1, 'Mix sugar, vanilla extract, butter, and eggs'),
+    (2, 2, 'Add baking powder and flour'),
+    (2, 5, 'Bake mixture at 160C for 50-60min'),
+    (3, 1, 'Mix butter and dark brown sugar together.'),
+    (3, 2, 'Mix in flour, baking powder, and (optionally, for taste) cinnamon powder and ginger'),
+    (3, 3, 'Add one egg, mix until a consistent dough (but no heavy kneading)---rest the dough in the fridge'),
+    (3, 4, 'Soak raisins in rum, clean apples and cut them into 1cm cubes'),
+    (3, 5, 'Mix the rum-raisins, apple cubes, cinnamon powder, lemon juice of one lemon, and (optionally) dark brown sugar'),
+    (3, 6, 'Roll out 65% of the dough and line a pre-greased pie pan with the rolled-out dough'),
+    (3, 7, 'Add the apple mixture into the pie pan'),
+    (3, 8, 'Use the remaining dough to make 1cm-wide strips and cover the pie with a lattice of dough strips'),
+    (3, 9, 'Bake in a pre-heated oven on 170C for around 50-70min'),
+    (4, 1, 'Mix sugar, vanilla extract, and soft (room temperature) butter until a light and fluffy batter'),
+    (4, 2, 'Beat into the batter the eggs, one at a time'),
+    (4, 3, 'Mix baking powder and flour'),
+    (4, 4, 'Sift and fold the flour mixture into the sugar-butter-egg batter'),
+    (4, 5, 'Grease the cake pan with a bit of soft butter and dust the pan with some flour'),
+    (4, 6, 'Put resulting batter into the pre-greased cake pan and bake at 160C for 50-60min'),
+    (4, 7, 'Check with skewer whether cake is baked: no raw batter should stick to the skewer'),
+    (5, 1, 'Go to fast food restaurant'),
+    (5, 2, 'Order the fried chicken'),
+    (5, 4, 'ROFLMAO---(check the date of this post)'),
+    (8, 1, 'Mix the water, flour, and yeast; cover and rest for 12-24h'),
+    (8, 2, 'Add the remainder of the water, flour, yeast, and salt; heavy knead in kitchen machine for 10-15min'),
+    (8, 3, 'Let the dough proof for 60-90min (or until doubled in size)'),
+    (8, 4, 'Stretch-and-fold the dough, shape the dough for the baking step'),
+    (8, 5, 'Pre-heat the oven at 400F and let the shaped dough rest for 30min'),
+    (8, 6, 'Bake the bread for 40-60min on hot surface (e.g., baking stone or baking tray)'),
+    (8, 7, 'Cool before slicing');
+
+
+CREATE TABLE ingredient
+(
+    rid INT NOT NULL,
+    step INT NOT NULL,
+    ingredient VARCHAR(100) NOT NULL,
+    amount INT NOT NULL,
+    unit CHAR(1) NOT NULL CHECK(unit IN ('g', 'm', 'c')),
+    PRIMARY KEY(rid, step, ingredient),
+    FOREIGN KEY(rid, step) REFERENCES instructions
+);
+
+INSERT INTO ingredient VALUES
+    (2, 1, 'sugar', 200, 'g'),
+    (2, 1, 'vanilla extract', 15, 'm'),
+    (2, 1, 'butter', 200, 'g'),
+    (2, 1, 'egg', 4, 'c'),
+    (2, 2, 'flour', 200, 'g'),
+    (2, 2, 'baking powder', 5, 'g'),
+    (4, 1, 'sugar', 200, 'g'),
+    (4, 1, 'vanilla extract', 15, 'm'),
+    (4, 1, 'butter', 200, 'g'),
+    (4, 2, 'egg', 4, 'c'),
+    (4, 3, 'flour', 200, 'g'),
+    (4, 3, 'baking powder', 5, 'g'),
+    (4, 5, 'butter', 10, 'g'),
+    (4, 5, 'flour', 10, 'g'),
+    (8, 1, 'flour', 200, 'g'),
+    (8, 1, 'yeast', 7, 'g'),
+    (8, 1, 'water', 200, 'm'),
+    (8, 2, 'flour', 300, 'g'),
+    (8, 2, 'yeast', 7, 'g'),
+    (8, 2, 'water', 175, 'm'),
+    (8, 2, 'salt', 10, 'g');
+    
+CREATE TABLE product
+(
+    ingredient VARCHAR(100) NOT NULL,
+    amount INT NOT NULL,
+    unit CHAR(1) NOT NULL CHECK(unit IN ('g', 'm', 'c')),
+    manufacturer VARCHAR(100) NOT NULL,
+    price DECIMAL(10, 2) NOT NULL,
+    PRIMARY KEY(ingredient, amount, manufacturer)
+);
+
+INSERT INTO product VALUES
+    ('sugar', 500, 'g', 'RoyaleSugar', 2.00),
+    ('sugar', 1000, 'g', 'RoyaleSugar', 2.75),
+    ('sugar', 2500, 'g', 'RoyaleSugar', 10.00),
+    ('sugar', 5000, 'g', 'RoyaleSugar', 15.00),
+    ('sugar', 10000, 'g', 'BakingBulkPros', 20.00),
+    ('milk', 1000, 'm', 'CowJuicers', 2.00),
+    ('milk', 4000, 'm', 'CowJuicers', 6.00),
+    ('milk', 10000, 'm', 'BakingBulkPros', 10.00),
+    ('flour', 1000, 'g', 'DustyMaestro', 3.00),
+    ('flour', 5000, 'g', 'DustyMaestro', 12.00),
+    ('flour', 20000, 'g', 'DustyMaestro', 40.00),
+    ('flour', 20000, 'g', 'BakingBulkPros', 35.00),
+    ('baking powder', 200, 'g', 'DustyMaestro', 5.00),
+    ('baking powder', 1000, 'g', 'BakingBulkPros', 10.00),
+    ('vanilla extract', 150, 'm', 'FancySpices', 7.50),
+    ('vanilla extract', 1000, 'm', 'BakingBulkPros', 15.00),
+    ('egg', 6, 'c', 'AngryChickens', 3.00),
+    ('egg', 12, 'c', 'AngryChickens', 5.00),
+    ('egg', 36, 'c', 'AngryChickens', 15.00),
+    ('egg', 72, 'c', 'BakingBulkPros', 25.00),
+    ('choco chips', 250, 'g', 'NutsForChoco', 5.00),
+    ('choco chips', 2500, 'g', 'NutsForChoco', 35.00);
+    
+CREATE TABLE review
+(
+    uid INT NOT NULL,
+    rid INT NOT NULL REFERENCES recipe,
+    when TIMESTAMP NOT NULL,
+    score INT NOT NULL CHECK (score BETWEEN 0 AND 100)
+);
+
+INSERT INTO review VALUES
+    (2, 2, '20260102', 100),
+    (2, 4, '20260506', 100),
+    (4, 1, '20260603', 75),
+    (4, 2, '20260709', 30),
+    (4, 3, '20260712', 85),
+    (5, 1, '20260821', 80),
+    (5, 3, '20260913', 85),
+    (5, 6, '20261010', 90),
+    (5, 7, '20261015', 80),
+    (6, 2, '20261229', 10),
+    (5, 8, '20261230', 96);
