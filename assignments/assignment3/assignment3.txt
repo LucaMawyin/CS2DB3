@@ -1,0 +1,126 @@
+-- Student number: 400531739, MacID: mawyinl;
+
+-- Query 1
+
+SELECT ingredient, amount, unit, manufacturer, price, price / amount AS unit_price
+FROM product
+ORDER BY unit_price ASC;
+
+-- Query 2
+
+SELECT * 
+FROM recipe
+WHERE (uid, title) IN (
+    SELECT uid, title
+    FROM recipe
+    GROUP BY uid, title
+    HAVING COUNT(*) > 1
+)
+ORDER BY uid ASC, when DESC;
+
+-- Clarifications: Returns duplicates for all uids that have. 
+--                 Ordered by ascending uid and most recent version.
+
+-- Query 3
+
+SELECT DISTINCT i.rid, i.ingredient
+FROM ingredient i
+JOIN ingredient i ON r.rid = i.rid
+WHERE NOT EXISTS (
+    SELECT *
+    FROM product p
+    WHERE p.ingredient = i.ingredient
+)
+
+ORDER BY i.rid, i.ingredient;
+
+-- Clarifications: Returns the rid of ingredient not in product
+--                 Gives ingredient name that is not in product as well. 
+
+-- Query 4 
+
+SELECT r.rid 
+FROM recipe r
+WHERE
+    NOT EXISTS (
+        SELECT *
+        FROM ingredient ing
+        WHERE ing.rid = r.rid
+    )
+
+    OR NOT EXISTS (
+        SELECT 1
+        FROM instructions ins
+        WHERE ins.rid = r.rid
+        AND ins.step = 1
+    )
+
+    OR EXISTS (
+        SELECT 1
+        FROM instructions ins
+        WHERE ins.rid = r.rid
+        AND ins.step < (
+            SELECT MAX(step)
+            FROM instructions
+            WHERE rid = r.rid
+        )
+        AND NOT EXISTS (
+            SELECT 1 
+            FROM instructions next
+            WHERE next.rid = r.rid
+            AND next.step = ins.step + 1
+        )
+    )
+
+    ORDER BY r.rid;
+
+-- Clarifications: Returns rid of recipes that are incomplete
+
+-- Query 5
+
+SELECT rid, COUNT(DISTINCT ingredient) AS ningredients
+FROM ingredient
+GROUP BY rid
+ORDER BY ningredients DESC, rid ASC;
+
+-- Clarifications: Does not work for recipes with no ingredients
+
+-- Query 6
+
+SELECT r.uid, r.rid
+FROM recipe r
+JOIN review rv on r.rid = rv.rid
+GROUP BY r.uid, r.rid, r.when
+
+HAVING AVG(rv.score) = (
+    SELECT MAX(avg_score)
+    FROM (
+        SELECT AVG(rv2.score) AS avg_score
+        FROM recipe r2
+        JOIN review rv2 on r2.rid = rv2.rid
+        WHERE r2.uid = r.uid
+        GROUP BY r2.rid
+    ) AS sub
+)
+
+AND r.when = (
+    SELECT MIN(r3.when)
+    FROM recipe r3
+    JOIN review rv3 on r3.rid = rv3.rid
+    WHERE r3.uid = r.uid
+    GROUP BY r3.rid
+    HAVING AVG(rv3.score) = (
+        SELECT MAX(avg_score)
+        FROM (
+            SELECT AVG(rv4.score) AS avg_score
+            FROM recipe r4
+            JOIN review rv4 on r4.rid = rv4.rid
+            WHERE r4.uid = r.uid
+            GROUP BY r4.rid
+        ) AS sub2
+    )
+)
+
+ORDER BY avg_score DESC, r.when ASC;
+
+-- Clarifications: Filters for highest avg score for uid, then get earliest recipe as tie breaker
