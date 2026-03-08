@@ -1,0 +1,77 @@
+-- Student number: 400531739, MacID: mawyinl;
+
+-- Query 1
+
+SELECT ingredient, amount, unit, manufacturer, price, price / amount AS unit_price
+FROM product
+ORDER BY unit_price ASC;
+
+-- Query 2
+
+SELECT * 
+FROM recipe
+WHERE (uid, title) IN (
+    SELECT uid, title
+    FROM recipe
+    GROUP BY uid, title
+    HAVING COUNT(*) > 1
+)
+ORDER BY uid ASC, when DESC;
+
+-- Clarifications: Returns duplicates for all uids that have. 
+--                 Ordered by ascending uid and most recent version.
+
+-- Query 3
+
+SELECT DISTINCT i.rid, i.ingredient
+FROM ingredient i
+JOIN ingredient i ON r.rid = i.rid
+WHERE NOT EXISTS (
+    SELECT *
+    FROM product p
+    WHERE p.ingredient = i.ingredient
+)
+
+ORDER BY i.rid, i.ingredient;
+
+-- Clarifications: Returns the rid of ingredient not in product
+--                 Gives ingredient name that is not in product as well. 
+
+-- Query 4 
+SELECT DISTINCT i1.rid 
+FROM instructions i1
+
+WHERE 
+
+    NOT EXISTS (
+        SELECT *
+        FROM instructions i2
+        WHERE i2.rid = i1.rid
+        AND i2.step = 1
+    )
+
+    OR 
+
+    (
+        NOT EXISTS (
+            SELECT *
+            FROM instructions i3
+            WHERE i3.rid = i1.rid
+            AND i3.step = i1.step + 1
+        )
+
+        AND i1.step <> (
+            SELECT MAX(i4.step)
+            FROM instructions i4
+            WHERE i4.rid = i1.rid
+        )
+    )
+
+    OR 
+
+    NOT EXISTS (
+        SELECT *
+        FROM ingredients ing
+        WHERE ing.rid = i1.rid
+    );
+
