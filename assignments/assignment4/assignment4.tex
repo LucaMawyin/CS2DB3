@@ -175,9 +175,11 @@ $Q3:\pi_{rid,\text{ingredient}}(\textbf{Ingredient})~\backslash~\text{ATLEAST-3}
 \stepcounter{section}
 \section*{P.\thesection}
 
-$\text{MANU\_RECIPES}:=\pi_{rid,\text{manufacturer}}(\textbf{Ingredient}\bowtie_\text{Ingredient.ingredient=Product.ingredient}\textbf{Product})$\\
-$\text{MUTLI\_INGREDIENT}:=\pi_{P_1.\text{ingredient}\mapsto\text{ingredient}}(\sigma_{P_1.\text{ingredient}=P_2.\text{ingredient}\land{P_1.\text{manufacturer}\neq{P_2.\text{manufacturer}}}}\\
-(\rho_{P_1}(\textbf{Product}))\times\rho_{P_2}(\textbf{Product}))$
-$\text{AVOID\_MANUFACTURER}$
+$\text{MUTLI\_MANUFACTURER}:=\pi_{P_1.\text{ingredient}\mapsto\text{ingredient}}(\sigma_{P_1.\text{ingredient}=P_2.\text{ingredient}\land{P_1.\text{manufacturer}\neq{P_2.\text{manufacturer}}}}\\
+(\rho_{P_1}(\textbf{Product})\times\rho_{P_2}(\textbf{Product})))$\\
+$\text{SINGLE\_MANUFACTURER\_ING}:=\pi_\text{ingredient}(\textbf{Product})~\backslash~MULTI\_MANUFACTURER$\\
+$SINGLE\_MANUFACTURER:=\pi_{rid,\text{ingredient}}((\text{Ingredient}\bowtie\\
+\text{SINGLE\_MANUFACTURER\_ING})\bowtie_{\text{Ingredient.ingredient=Product.ingredient}}\textbf{Product})$\\[1.5em]
+$Q4:\pi_{rid,\text{manufacturer}}(\textbf{Ingredient}\bowtie\textbf{Product})~\backslash~\text{SINGLE\_MANUFACTURER}$
 
 \end{document}
