@@ -1,0 +1,183 @@
+%% Determines the type of document (including standard settings for layout).
+\documentclass[letterpaper]{article}
+
+
+
+%% Package to control the size of a page: the standard margins used by LaTeX are
+%% very wide!
+\usepackage[margin=1in]{geometry}
+
+
+%% Packages add functionality to the document. The AMS packages are standard
+%% packages to support various mathematical notations. AMS stands for American
+%% Mathematical Society, the organization that maintains these packages.
+\usepackage{amsmath,amsthm,amssymb}
+
+%% Theorems-like environments using functionality provided by amsthm.
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+    %% [section] at the end specifies that theorems should be numbered
+    %% per-section: Section x starts with theorem-like x.1 and so on, ...
+\newtheorem{proposition}[theorem]{Proposition}
+    %% [theorem] in the middle specifies: use the same counter as the theorem
+    %% environment: here we number all theorem-like environments consecutively.
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{remark}[theorem]{Remark}
+
+
+%% Support for nicely formatted tables.
+\usepackage{booktabs}
+
+
+%% Support for colors & colors in tables.
+\usepackage[table]{xcolor}
+
+% Seven colors safe for use color blindness.
+% Colors taken from doi:10.1038/nmeth.1618.
+\definecolor{cbOrange}{RGB}{230,159,0}
+\definecolor{cbSkyBlue}{RGB}{86,180,233}
+\definecolor{cbBluishGreen}{RGB}{0,158,115}
+\definecolor{cbYellow}{RGB}{240,228,66}
+\definecolor{cbBlue}{RGB}{0,114,178}
+\definecolor{cbVermillion}{RGB}{213,94,0}
+\definecolor{cbReddischPurple}{RGB}{204,121,167}
+
+
+%% Notation used in this document.
+\newcommand{\n}{\mathbf{n}} %% Num. Replicas.
+\newcommand{\f}{\mathbf{f}} %% Num. Faulty Replicas.
+
+%% Misc. Math notation.
+\newcommand{\BigO}{\mathcal{O}}
+\newcommand{\abs}[1]{\lvert #1 \rvert}
+\newcommand{\AName}[1]{\textsc{#1}}
+\newcommand{\Var}[1]{\texttt{#1}}
+
+
+%% Algorithms.
+\usepackage{algorithm}
+\usepackage[noend]{algorithmic}
+\newcommand{\GETS}{:=}
+
+
+%% Formatting SI-units.
+\usepackage{siunitx}
+\sisetup{per-mode=symbol}
+
+
+%% TikZ: for creating figures.
+\usepackage{tikz}
+
+%% Configuration for figures: Nicer arrows.
+\usetikzlibrary{arrows.meta}
+\tikzset{>=Stealth}
+
+
+%% pgfplots: drawing plots using TikZ.
+\usepackage{pgfplots}
+%% Configuration for plots: Use color-blind friendly colors.
+\pgfplotscreateplotcyclelist{cbSafeList}{
+    very thick,solid,cbOrange,every mark/.append style={solid},mark=*\\
+    very thick,solid,cbSkyBlue,every mark/.append style={solid},mark=*\\
+    very thick,solid,cbBluishGreen,every mark/.append style={solid},mark=*\\
+    very thick,solid,cbYellow,every mark/.append style={solid},mark=*\\
+    very thick,solid,cbBlue,every mark/.append style={solid},mark=*\\
+    very thick,solid,cbVermillion,every mark/.append style={solid},mark=*\\
+    very thick,solid,cbReddischPurple,every mark/.append style={solid},mark=*\\
+    very thick,solid,black,every mark/.append style={solid},mark=*\\
+}
+\pgfplotsset{
+    legend style={font=\small},
+    compat=1.16,
+    width=260pt,
+    height=140pt,
+    legend cell align=left,
+    xlabel near ticks,
+    ylabel near ticks,
+    every axis/.append style={
+        cycle list name=cbSafeList,
+        ymin=0,
+        enlargelimits=0.05,
+        mark size=1pt,
+        ylabel style={align=center},
+        xlabel style={align=center},
+        title style={align=center}
+    }
+}
+
+%% PgfplotsTable: loading data files to use with pgfplots.
+\usepackage{pgfplotstable}
+
+
+%% Support for hyperlinks and urls. The setting ``colorlinks'' sets how links
+%% are shown in the document (with a color, without underline). We put hyperref
+%% last---it has a tendency to break other packages when loaded before them.
+\usepackage[colorlinks]{hyperref}
+\usepackage{graphicx}
+\usepackage{pgffor}
+\usepackage{caption}
+\usepackage{tabularx}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+
+
+\begin{document}
+
+%% First the meta-data of the doucment: title,
+
+\begin{titlepage}
+    \centering
+    \vspace*{3cm}
+    
+    {\Huge COMPSCI 2DB3 Assignment 4}\\[2cm]
+    
+    {\large Luca Mawyin}\\[0.5cm]
+    
+    {\large Dr. Jelle Hellings}\\[0.5cm]
+
+    {\large \today}\\[2cm]
+
+    {\Large McMaster University}
+
+    \vfill
+    \begin{flushleft}
+
+        {\large \textbf{Student Number: }400531739}\\[0.5cm]
+        {\large \textbf{MacID: }mawyinl}
+    \end{flushleft}
+
+\end{titlepage}
+
+\stepcounter{section}
+\section*{P.\thesection}
+
+$\text{Q}_1:\pi_{uid}(\textbf{Review})\backslash\pi_{uid}(\textbf{Recipe})$
+
+\stepcounter{section}
+\section*{P.\thesection}
+
+$\text{NOTMOSTRECENT}:=\rho_{C_1.rid\mapsto{rid},C_1.title\mapsto{title},C_1.uid\mapsto{uid},C_1.when\mapsto{when}}(\pi_{C_1.rid,C_1.title,C_1.uid,C_1.when}$\\
+$(\sigma_{C_1.uid=C_2.uid\land{C}_1.when<C_2.when}(\rho_{C_1}(\textbf{Recipe})\times\rho_{C_2}(\textbf{Recipe}))))$\\[1.5em]
+$Q_2:\textbf{Recipe}~\backslash~\text{NOTMOSTRECENT}$
+
+\stepcounter{section}
+\section*{P.\thesection}
+
+$\text{ATLEAST-3}:=\rho_{I_1.rid\mapsto{rid},I_1.ingredient\mapsto{ingredient}}(\pi_{I_1.rid,I_1.\text{ingredient}}\\
+(\sigma_{I_1.\text{ingredient}=I_2.\text{ingredient}=I_3.\text{ingredient}\land{I_1.rid}\neq{I_2.rid}\land{I_2.rid}\neq{I_3.rid}\land{I_1.rid}\neq{I_3.rid}}(\rho_{I_1}(\textbf{Ingredient})\times\rho_{I_2}(\textbf{Ingredient})\times\rho_{I_3}(\textbf{Ingredient}))))$\\[1.5em]
+$Q3:\pi_{rid,\text{ingredient}}(\textbf{Ingredient})~\backslash~\text{ATLEAST-3}$
+
+\stepcounter{section}
+\section*{P.\thesection}
+
+$\text{MANU\_RECIPES}:=\pi_{rid,\text{manufacturer}}(\textbf{Ingredient}\bowtie_\text{Ingredient.ingredient=Product.ingredient}\textbf{Product})$\\
+$\text{MUTLI\_INGREDIENT}:=\pi_{P_1.\text{ingredient}\mapsto\text{ingredient}}(\sigma_{P_1.\text{ingredient}=P_2.\text{ingredient}\land{P_1.\text{manufacturer}\neq{P_2.\text{manufacturer}}}}\\
+(\rho_{P_1}(\textbf{Product}))\times\rho_{P_2}(\textbf{Product}))$
+$\text{AVOID\_MANUFACTURER}$
+
+\end{document}
