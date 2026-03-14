@@ -156,7 +156,7 @@
 \stepcounter{section}
 \section*{P.\thesection}
 
-$\text{Q}_1:\pi_{uid}(\textbf{Review})\backslash\pi_{uid}(\textbf{Recipe})$
+$\text{Q}_1:\pi_{uid}(\textbf{Review})~\backslash~\pi_{uid}(\textbf{Recipe})$
 
 \stepcounter{section}
 \section*{P.\thesection}
@@ -175,11 +175,27 @@ $Q3:\pi_{rid,\text{ingredient}}(\textbf{Ingredient})~\backslash~\text{ATLEAST-3}
 \stepcounter{section}
 \section*{P.\thesection}
 
-$\text{MUTLI\_MANUFACTURER}:=\pi_{P_1.\text{ingredient}\mapsto\text{ingredient}}(\sigma_{P_1.\text{ingredient}=P_2.\text{ingredient}\land{P_1.\text{manufacturer}\neq{P_2.\text{manufacturer}}}}\\
-(\rho_{P_1}(\textbf{Product})\times\rho_{P_2}(\textbf{Product})))$\\
-$\text{SINGLE\_MANUFACTURER\_ING}:=\pi_\text{ingredient}(\textbf{Product})~\backslash~MULTI\_MANUFACTURER$\\
-$SINGLE\_MANUFACTURER:=\pi_{rid,\text{ingredient}}((\text{Ingredient}\bowtie\\
+$\text{MUTLI\_MANUFACTURER}:=\rho_{P_1.ingredient\mapsto{ingredient}}(\pi_{P_1.\text{ingredient}}\\
+(\sigma_{P_1.\text{ingredient}=P_2.\text{ingredient}\land{P_1.\text{manufacturer}\neq{P_2.\text{manufacturer}}}}(\rho_{P_1}(\textbf{Product})\times\rho_{P_2}(\textbf{Product}))))$\\[1.5em]
+$\text{SINGLE\_MANUFACTURER\_ING}:=\pi_\text{ingredient}(\textbf{Product})~\backslash~\text{MULTI\_MANUFACTURER}$\\[1.5em]
+$\text{SINGLE\_MANUFACTURER}:=\pi_{rid,\text{ingredient}}((\textbf{Ingredient}\bowtie_{\text{Ingredient.ingredient=SINGLE\_MANUFACTURER\_ING.ingredient}}
 \text{SINGLE\_MANUFACTURER\_ING})\bowtie_{\text{Ingredient.ingredient=Product.ingredient}}\textbf{Product})$\\[1.5em]
-$Q4:\pi_{rid,\text{manufacturer}}(\textbf{Ingredient}\bowtie\textbf{Product})~\backslash~\text{SINGLE\_MANUFACTURER}$
+$Q4:\pi_{rid,\text{manufacturer}}(\textbf{Ingredient}\bowtie_{\text{Ingredient.ingredient=Product.ingredient}}\textbf{Product})~\backslash~\text{SINGLE\_MANUFACTURER}$
 
+\stepcounter{section}
+\section*{P.\thesection}
+
+$\text{RA}:=\pi_{rid,author}(\rho_{uid\to\text{author}}(\textbf{Recipe}))$\\
+$\text{RV}:=\pi_{reviewer,rid}(\rho_{uid\to\text{reviewer}}(\textbf{Review}))$\\
+$\text{RECIPEREVIEWS}:=\pi_{\text{author,reviewer},rid}(\text{RV}\bowtie_{RV.rid=RA.rid}\text{RA})$\\[1.5em]
+$\text{Q5}:\text{RECIPEREVIEWS}\div\text{RA}$
+
+\stepcounter{section}
+\section*{P.\thesection}
+
+$\text{RI}:=\pi_{rid,\text{ingredient}}(\textbf{Ingredient})$\\
+$\text{SI}:=\rho_{sid\mapsto{rid}}(\pi_{sid,\text{ingredient}}(\text{RI}))$\\
+$\text{TI}:=\rho_{tid\mapsto{rid}}(\pi_{tid,\text{ingredient}}(\text{RI}))$\\
+$\text{MATCHINGREDIENTS}:=(\text{SI}\bowtie_{\text{SI.ingredient}=\text{TI.ingredient}\land\text{SI}.sid\neq\text{TI}.tid}\text{TI})$\\[1.5em]
+$\text{Q6}:\pi_{sid,tid}(\text{MATCHINGREDIENTS}\div\pi_{\text{ingredient}}(\text{SI}))$
 \end{document}
