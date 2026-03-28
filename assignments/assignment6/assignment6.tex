@@ -160,15 +160,25 @@
 \subsubsection{}
 
 \begin{itemize}
-    \item Every \textit{rid} has a (\textit{title, total-duration, min-price})
-    \item Every recipe has at least one step
-    \item Every (\textit{rid, step-order}) determines a unique (\textit{description, duration})
-    \item Every recipe step has at least one ingredient
-    \item \textit{amount} is determined by (\textit{rid, step-order, ingredient})
-    \item Every \textit{UPC} uniquely identifies a (\textit{producer, quantity, price, unit-price})
-    \item \textit{ingredient} can have many \textit{UPC}
-    \item \textit{producer} can produce many \textit{UPC}
+    \item Every \textit{rid} has a (\textit{title, total-duration, min-price}). \\[0.5em]
+    \textbf{Explanation:} (\textit{title, total-duration, min-price}) are descriptive of the recipe as a whole, and therefore would remain constant for all entries with the same \textit{rid}.
+    \item Every recipe has at least one step \\[0.5em]
+    \textbf{Explanation:} The description states that a recipe has one or more steps, and therefore cannot exist without at least one step.
+    \item Every (\textit{rid, step-order}) determines a unique (\textit{description, duration})\\[0.5em]
+    \textbf{Explanation:} Every recipe has a unique sequence of steps, and each step has a description and duration. This means that every \textit{rid} and \textit{step-order} uniquely identifies the description of the step, and subsequently the duration for such. Furthermore, as a step can involve multiple ingredients, the ingredients are not an identifying attribute of a step in a recipe.
+    \item Every recipe step has at least one ingredient \\[0.5em]
+    \textbf{Explanation:} The description states that a recipe step must include at least one ingredient. Subsequently, this becomes an intuitive requirement no inclusion of an ingredient does not change the current state of a recipe.
+    \item \textit{amount} is determined by (\textit{rid, step-order, ingredient})\\[0.5em]
+    \textbf{Explanation:} Different recipes may require the same ingredient, but different amounts. We identify the amount needed of an ingredient by the recipe, the step in which it is required, and the ingredient being used.
+    \item \textit{ingredient} can have many \textit{UPC} \\[0.5em]
+    \textbf{Explanation:} Many producers can produce the same ingredient. Therefore, ingredient can correspond to many different UPCs, that represent the offering of the ingredient by different producers.
+    \item Every \textit{UPC} uniquely identifies a (\textit{ingredient, producer, quantity, price, unit-price})\\[0.5em]
+    \textbf{Explanation:} A UPC uniquely identifies a product offering of an ingredient. As an ingredient can be produced by many producers, to differentiate the offering of such ingredients, we use the UPC to identify the producer, quantity, price, and unit-price of the ingredient.
+    \item \textit{producer} can produce many \textit{UPC}\\[0.5em]
+    \textbf{Explanation:} A producer can produce many different ingredients. Therefore, there can exist many different UPCs that correspond to different offerings of ingredients, with the same producer.
 \end{itemize}
+
+\subsubsection{}
 
 
 \end{document}
