@@ -1,0 +1,175 @@
+-- Student number: 400531739, MacID: mawyinl;
+
+-- Query 1
+
+SELECT 
+    R.rid,
+    COALESCE(S.nsteps, 0) AS nsteps,
+    COALESCE(I.ningredients, 0) AS ningredients,
+    COALESCE (V.nreviews, 0) AS nreviews,
+    V.ascore
+FROM Recipe R
+
+LEFT JOIN (
+    FROM rid, COUNT(*) AS nsteps
+    FROM Instructions
+    GROUP BY rid
+) S ON R.rid = S.rid
+
+LEFT JOIN (
+    FROM rid, COUNT(*) AS ningredients
+    FROM Ingredient
+    GROUP BY rid
+) I ON R.rid = I.rid
+
+LEFT JOIN (
+    FROM rid, COUNT(*) AS nreviews, AVG(score) AS ascore
+    FROM Review
+    GROUP BY rid
+) V ON R.rid = V.rid;
+
+-- Clarifications: Returns  (rid, nsteps, ningredients, nreviews, ascore)
+
+-- Query 2
+
+WITH RStats AS(
+    SELECT 
+        R.rid,
+        R.uid,
+        R.when,
+        COUNT(V.score) AS nreviews,
+        AVG(V.score) AS ascore
+    FROM Recipe R
+    LEFT JOIN Review V ON R.rid = V.rid
+    GROUP BY R.rid, R.uid, R.when
+),
+
+RSeq AS (
+
+    -- Base Case
+    SELECT
+        rid AS start,
+        uid,
+        rid AS end,
+        1 AS length
+    FROM RStats
+
+    UNION ALL
+
+    SELECT
+        S.start,
+        S.uid, 
+        r2.rid AS end,
+        S.length + 1
+    FROM RSeq S
+    JOIN RStats r1 ON r1.rid = S.end 
+    JOIN RStats r2 
+        ON r1.uid = r2.uid
+        AND r1.when < r2.when
+    WHERE 
+        r2.ascore < r1.ascore
+    AND r2.nreviews < r1.nreviews
+)
+
+SELECT 
+    R.uid,
+    MAX(S.length) AS length
+FROM RStats R
+JOIN RSeq S ON R.rid = S.end
+WHERE r.when = (
+    SELECT MAX(r2.when)
+    FROM Recipe r2
+    WHERE r2.uid = r.uid
+)
+
+GROUP BY r.uid
+ORDER BY length DESC;
+
+-- Clarifications: Gives longest sequence with descending reviews ending with last recipe
+
+-- Query 3
+
+WITH ICost AS (
+    SELECT 
+        I.rid,
+        I.ingredient,
+        MIN(P.price * I.amount / P.amount) AS cost
+    FROM Ingredient I
+    JOIN Product P
+        ON I.ingredient = P.ingredient
+        AND P.amount >= I.amount
+    GROUP BY I.rid, I.ingredient
+),
+
+RPrice AS (
+    SELECT
+        I.rid,
+        SUM(I.cost) AS try_out
+    FROM ICost I
+    GROUP BY I.rid
+)
+
+SELECT
+    R.*,
+    RP.try_out
+FROM Recipe R
+LEFT JOIN RPrice RP ON R.rid = RP.rid;
+
+-- Clarifications: Automatic NULL inserted in cost if not in Product
+
+-- Query 4
+
+WITH UAvg AS (
+    SELECT 
+        uid,
+        AVG(score) as ascore
+    FROM Review
+    GROUP BY uid
+),
+
+PositiveRating AS (
+    SELECT 
+        R.rid,
+        R.uid,
+        R.score,
+        CASE 
+            WHEN R.score > U.ascore THEN 1
+            ELSE 0 
+        END AS positive
+    FROM Review V
+    JOIN UAvg ON R.uid = U.uid
+),
+
+RQuality AS (
+    SELECT 
+        rid, 
+        5 * ( SUM(positive) / COUNT(*) ) AS qr
+    FROM PositiveRating
+    GROUP BY rid
+),
+
+Disagrees AS (
+    SELECT 
+        PR.rid,
+        SUM (
+            CASE 
+                WHEN PR.positive = 1 AND RQ.qr <= 1 THEN 1
+                WHEN PR.positive = 0 AND RQ.qr >= 4 THEN 1
+            ELSE 0
+        ) AS d,
+        COUNT(*) AS n,
+    FROM PositiveRating PR
+    JOIN RQuality RQ ON PR.rid = RQ.rid
+    GROUP BY PR.rid
+),
+
+SELECT
+    RQ.rid,
+    RQ.qr,
+    5 - ( 5 * (D.d / D.n) ) AS cr
+FROM RQuality RQ
+JOIN Disagrees D on D.rid = RQ.rid
+ORDER BY RQ.rid;
+
+-- Clarifications: Does not include recipes with no review 
+
