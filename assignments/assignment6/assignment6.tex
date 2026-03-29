@@ -159,26 +159,23 @@
 \subsection{}
 \subsubsection{}
 
-\begin{itemize}
-    \item Every \textit{rid} has a (\textit{title, total-duration, min-price}). \\[0.5em]
-    \textbf{Explanation:} (\textit{title, total-duration, min-price}) are descriptive of the recipe as a whole, and therefore would remain constant for all entries with the same \textit{rid}.
-    \item Every recipe has at least one step \\[0.5em]
-    \textbf{Explanation:} The description states that a recipe has one or more steps, and therefore cannot exist without at least one step.
-    \item Every (\textit{rid, step-order}) determines a unique (\textit{description, duration})\\[0.5em]
-    \textbf{Explanation:} Every recipe has a unique sequence of steps, and each step has a description and duration. This means that every \textit{rid} and \textit{step-order} uniquely identifies the description of the step, and subsequently the duration for such. Furthermore, as a step can involve multiple ingredients, the ingredients are not an identifying attribute of a step in a recipe.
-    \item Every recipe step has at least one ingredient \\[0.5em]
-    \textbf{Explanation:} The description states that a recipe step must include at least one ingredient. Subsequently, this becomes an intuitive requirement no inclusion of an ingredient does not change the current state of a recipe.
-    \item \textit{amount} is determined by (\textit{rid, step-order, ingredient})\\[0.5em]
-    \textbf{Explanation:} Different recipes may require the same ingredient, but different amounts. We identify the amount needed of an ingredient by the recipe, the step in which it is required, and the ingredient being used.
-    \item \textit{ingredient} can have many \textit{UPC} \\[0.5em]
-    \textbf{Explanation:} Many producers can produce the same ingredient. Therefore, ingredient can correspond to many different UPCs, that represent the offering of the ingredient by different producers.
-    \item Every \textit{UPC} uniquely identifies a (\textit{ingredient, producer, quantity, price, unit-price})\\[0.5em]
-    \textbf{Explanation:} A UPC uniquely identifies a product offering of an ingredient. As an ingredient can be produced by many producers, to differentiate the offering of such ingredients, we use the UPC to identify the producer, quantity, price, and unit-price of the ingredient.
-    \item \textit{producer} can produce many \textit{UPC}\\[0.5em]
-    \textbf{Explanation:} A producer can produce many different ingredients. Therefore, there can exist many different UPCs that correspond to different offerings of ingredients, with the same producer.
-\end{itemize}
-\textbf{REVIEW USING COURSE NOTES PAGE 207}
+\begin{enumerate}
+    \item The attribute \textit{rid}, which represents the recipe idetifier, determines all other attributes of the recipe. If two tuples agree on the value for attribute \textit{rid}, then they agree on values for attributes \textit{rid, title, total-duration, min-price}.
+    \item The value for attribute \textit{min-price}, which represents the minimum price of a recpie, can be computed using the unit price of the cheapest prduct offering of each ingredient and the amount of that ingredient required by the recipe.
+    \item The tuple of attributes \textit{rid, step-order}, which represents the order of a step within a recipe, determines all other step attributes \textit{rid, step-order, description, duration}.
+    \item \textit{step-order} does not uniquely determine \textit{ingredient}, as a step can involve multiple ingredients. Therefore, a recipe may have many steps $n$ with the same \textit{step-order} and different \textit{ingredient} values. As different attributes of an \textit{ingredient} can be used in a step, the attribute \textit{amount} is not uniquely determined by \textit{step-order}. Therefore, the combination of attributes \textit{step-order} and \textit{ingredient} determines the attribute \textit{amount} within the context of a specific recipe with attribute \textit{rid}.
+    \item The attribute \textit{UPC}, which represents the unique product identifier code of an \textit{ingredient} offering, determines all other attributes of offering \textit{UPC, ingredient, producer, quantity, price, unit-price}.
+    \item The value for attribute \textit{unit-price}, which represents the price per unit of an ingredient, can be computed by dividing the price of an ingredient offering by the quantity of such offering.
+    \item As a many producers can produce the same ingredient, the attribute \textit{ingredient} is not uniquely determined by \textit{UPC}. Therefore, an ingredient can have many corresponding attributes \textit{UPC}. Likewise, a producer can produce many different ingredients. This means that the attribute \textit{producer} is not uniquely determined by \textit{UPC}. Therefore a producer can have many corresponding attributes \textit{UPC}.
+\end{enumerate}
+
 \subsubsection{}
 
+\begin{enumerate}
+    \item The attibute \textit{rid} acts as the identifier for a recipe. This implies that the constraint is a functional dependency, which can be expressed as $rid \rightarrow \textit{title,total-duration,min-price}$
+    \item Cannot be expressed as a dependency, as the value \textit{min-price} is a computed value and not a mapped value.
+    \item The tuple of attributes \textit{rid, step-order} acts as the identifier for attributes of a step. This implies that the constraint is a functional dependency, which can be expressed as \textit{rid, step-order} $\rightarrow$ \textit{description, duration}.
+    \item The constraint of \textit{step-order} determining \textit{ingredient} cannot be expressed as a dependency, as the value of \
+\end{enumerate}
 
 \end{document}
