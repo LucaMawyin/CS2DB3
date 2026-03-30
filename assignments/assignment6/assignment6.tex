@@ -188,19 +188,64 @@ The primary key for the relational schema \textbf{RecipeInfo} can be expressed a
 \section{}
 \subsection{}
 \subsubsection{}
-\textit{Reflexivity:} If $A \subseteq B$, then $B \rightarrow A$\\
-Let $A = x$ and $B = x$\\
-$x = x \subseteq x$ holds trivially\\
-Because $x \subseteq x$, $x \rightarrow x$ holds by Armstrong Axiom of Reflexivity.
+\begin{center}
+    If $x$ is an attribute, then $x\rightarrow x$
+\end{center}
+\begin{enumerate}
+    \item \textit{Reflexivity:} If $A \subseteq B$, then $B \rightarrow A$
+    \item Let $A = x$ and $B = x$
+    \item $x = x \subseteq x$ holds trivially
+    \item Because $x \subseteq x$, $x \rightarrow x$ holds by Armstrong Axiom of Reflexivity.
+\end{enumerate}
 
 \subsubsection{}
-If $A \rightarrow B$ and $C \rightarrow D$, then $AC \rightarrow BD$\\
-Let $\tau_1,\tau_2\in\mathcal{J}(\mathbf{R})$\\
-Assume the antecendent $\tau_1[AC]=\tau_2[AC]\equiv\tau_1[A]=\tau_2[A]\land\tau_1[C]=\tau_2[C]$\\
-Prove the consequent $\tau_1[BD]=\tau_2[BD]$\\
-By the antecedent and functional dependency $A\rightarrow B$, we conclude $\tau_1[B]=\tau_2[B]$\\
-By the antecedent and functional dependency $C\rightarrow D$, we conclude $\tau_1[D]=\tau_2[D]$\\
-Therefore we have $\big(\tau_1[B]=\tau_2[B]\big)\land\big(\tau_1[D]=\tau_2[D]\big)\equiv\tau_1[BD]=\tau_2[BD]$
+\begin{center}
+    If $A \rightarrow B$ and $C \rightarrow D$, then $AC \rightarrow BD$
+\end{center}
+\begin{enumerate}
+    \item Let $\tau_1,\tau_2\in\mathcal{J}(\mathbf{R})$
+    \item Assume the antecendent $\tau_1[AC]=\tau_2[AC]\equiv\tau_1[A]=\tau_2[A]\land\tau_1[C]=\tau_2[C]$
+    \item Prove the consequent $\tau_1[BD]=\tau_2[BD]$
+    \item By the antecedent and functional dependency $A\rightarrow B$, we conclude $\tau_1[B]=\tau_2[B]$
+    \item By the antecedent and functional dependency $C\rightarrow D$, we conclude $\tau_1[D]=\tau_2[D]$
+    \item Therefore we have $\big(\tau_1[B]=\tau_2[B]\big)\land\big(\tau_1[D]=\tau_2[D]\big)\equiv\tau_1[BD]=\tau_2[BD]$
+\end{enumerate}
+
 \subsubsection{}
-If $A\rightarrow B$ and $C \rightarrow D$, then $\big(A\cup\big(C~\backslash~B\big)\big)\rightarrow D$\\
+\begin{center}
+    If $A\rightarrow B$ and $C \rightarrow D$, then $\big(A\cup\big(C~\backslash~B\big)\big)\rightarrow D$
+\end{center}
+\begin{enumerate}
+    \item First define $C$ as $C=(C\cap B) \cup (C~\backslash~B)$
+    \item As $(C~\backslash~B)\subseteq C$, using Armstrong axiom of \textit{Reflexivity}, then $C \rightarrow (C~\backslash~B)$
+    \item Using Union, as $C \rightarrow (C~\backslash~B)$ and $C\rightarrow D$, then $C \rightarrow D\cup(C~\backslash~B)$
+    \item As $(C\cap B)\subseteq B$, we can say that $(C\cap B)\cup(C~\backslash~B)\subseteq B\cup(C~\backslash~B)$
+    \item Taking our definition of $C$, we can replace it to get $C\subseteq B\cup(C~\backslash~B)$
+    \item Using Armstrong axiom of \textit{Reflexivity}, as $C\subseteq B\cup(C~\backslash~B)$, then $B\cup(C~\backslash~B)\rightarrow C$ 
+    \item Now we take $A\rightarrow B$
+    \item Using Armstrong axiom \textit{Augmentation}, because $A\rightarrow B$, then $A\cup(C~\backslash~B)\rightarrow B\cup(C~\backslash~B)$
+    \item Using Armstrong axiom \textit{Transitivity}, because $B\cup(C~\backslash~B)\rightarrow C$ and $C \rightarrow D\cup(C~\backslash~B)$, then \newline $B\cup(C~\backslash~B)\rightarrow D\cup(C~\backslash~B)$
+    \item Using Armstrong axiom \textit{Transitivity}, because $A\cup(C~\backslash~B)\rightarrow B\cup(C~\backslash~B)$ and $B\cup(C~\backslash~B)\rightarrow D\cup(C~\backslash~B)$, then \newline $A\cup(C~\backslash~B)\rightarrow D\cup(C~\backslash~B)$
+    \item Finally, using Decomposition, because $A\cup(C~\backslash~B)\rightarrow D\cup(C~\backslash~B)$, then $A\cup(C~\backslash~B)\rightarrow D$
+\end{enumerate}
+
+\newpage
+
+\subsubsection{}
+\begin{center}
+    If $A\rightarrow B$ and $D\subseteq(B\cup C)$, then $AC\rightarrow D$
+\end{center}
+\begin{enumerate}
+    \item Using Armstrong axiom \textit{Reflexivity}, because $D\subseteq(B\cup C)$, then $(B\cup C)\rightarrow D$, or $BC \rightarrow D$
+    \item Taking $A\rightarrow B$ and using Armstrong axiom \textit{Augmentation}, we get $AC\rightarrow BC$
+    \item Using Armstrong axiom \textit{Transitivity}, because $AC\rightarrow BC$ and $BC \rightarrow D$, then $AC\rightarrow D$
+\end{enumerate}
+\subsubsection{}
+The four inference rules FD1-FD4 are not complete. In order to be complete, we must be able to derive the Armstrong axioms using the Functional Dependencies given. 
+\begin{enumerate}
+    \item P2.1 only gives a trivial dependency that cannot be used to derive any axioms
+    \item P2.2 cannot be used to derive transitivity dependency combines attributes, which does not allow us to eliminate anything to derive $A\rightarrow C$
+    \item P2.3
+\end{enumerate}
+
 \end{document}
