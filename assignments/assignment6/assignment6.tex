@@ -203,7 +203,7 @@ The primary key for the relational schema \textbf{RecipeInfo} can be expressed a
     If $A \rightarrow B$ and $C \rightarrow D$, then $AC \rightarrow BD$
 \end{center}
 \begin{enumerate}
-    \item Let $\tau_1,\tau_2\in\mathcal{J}(\mathbf{R})$
+    \item Let $\tau_1,\tau_2\in\mathfrak{I}(\mathbf{R})$
     \item Assume the antecendent $\tau_1[AC]=\tau_2[AC]\equiv\tau_1[A]=\tau_2[A]\land\tau_1[C]=\tau_2[C]$
     \item Prove the consequent $\tau_1[BD]=\tau_2[BD]$
     \item By the antecedent and functional dependency $A\rightarrow B$, we conclude $\tau_1[B]=\tau_2[B]$
@@ -241,11 +241,19 @@ The primary key for the relational schema \textbf{RecipeInfo} can be expressed a
     \item Using Armstrong axiom \textit{Transitivity}, because $AC\rightarrow BC$ and $BC \rightarrow D$, then $AC\rightarrow D$
 \end{enumerate}
 \subsubsection{}
-The four inference rules FD1-FD4 are not complete. In order to be complete, we must be able to derive the Armstrong axioms using the Functional Dependencies given. 
-\begin{enumerate}
-    \item P2.1 only gives a trivial dependency that cannot be used to derive any axioms
-    \item P2.2 cannot be used to derive transitivity dependency combines attributes, which does not allow us to eliminate anything to derive $A\rightarrow C$
-    \item P2.3
-\end{enumerate}
+The four inference rules FD1-FD4 are complete. In order to be complete, we must be able to derive $\delta$ from $\mathbb{D}$ using only the rules in $\mathfrak{I}$
+\subsubsection{}
+\subsubsection{}
 
+\section{}
+\subsection{}
+\subsubsection{}
+\begin{center}
+    If $\textbf{R}[AB]\subseteq \textbf{S}[CD]$ and $\textbf{S}[C]\subseteq\textbf{R}[B]$, then $\textbf{R}[A]\subseteq\textbf{S}[D]$
+\end{center}
+
+\begin{enumerate}
+    \item Assume $\tau\in\mathfrak{I}(\textbf{R})$
+    \item Using \textit{ID-Projection}, there exists $\tau'\in\mathfrak{I}(\textbf{S})$ such that $\tau[A]=\tau'[C]\land\tau[B]=\tau'[D]$
+\end{enumerate}
 \end{document}
