@@ -241,8 +241,47 @@ The primary key for the relational schema \textbf{RecipeInfo} can be expressed a
     \item Using Armstrong axiom \textit{Transitivity}, because $AC\rightarrow BC$ and $BC \rightarrow D$, then $AC\rightarrow D$
 \end{enumerate}
 \subsubsection{}
-The four inference rules FD1-FD4 are complete. In order to be complete, we must be able to derive $\delta$ from $\mathbb{D}$ using only the rules in $\mathfrak{I}$
+In order for FD1-FD4 to be complete, we must be able to derive $\delta$ from $\mathbb{D}$ using only the rules in $\mathfrak{I}$. As we are assuming the Armstrong axioms to be complete, this means that we must be able to derive them using FD1-FD4.
+\paragraph{Reflexivity}
+\begin{center}
+    If $B\subseteq A$, then $A\rightarrow B$
+\end{center}
+\begin{enumerate}
+    \item Use FD1 for attribute A. Then we have $A\rightarrow A$
+    \item Use FD4, where $A=A$, $B=A$, $C=\emptyset$, $D=B$. Then we have $A\rightarrow A$ and $B\subseteq (A\cup \emptyset)$, which gives $A\emptyset\rightarrow B=A\rightarrow B$ 
+\end{enumerate}
+\paragraph{Augmentation}
+\begin{center}
+    If $A\rightarrow B$, then $AC\rightarrow BC$
+\end{center}
+\begin{enumerate}
+    \item Use FD1 on attribute $C$, which gives $C\rightarrow C$
+    \item Use FD2, where $A=A$, $B=B$, $C=C$, and $D=C$. Because $A\rightarrow A$ and $C\rightarrow C$, then $AC\rightarrow BC$
+\end{enumerate}
+\paragraph{Transitivity}
+\begin{center}
+    If $A\rightarrow B$ and $B\rightarrow C$, then $A\rightarrow C$
+\end{center}
+\begin{enumerate}
+    \item Use FD3, where $A=A$, $B=B$, $C=B$ and $D=C$. Then we have if $A\rightarrow B$ and $B\rightarrow C$, then $A\cup(B~\backslash~B)\rightarrow C$
+    \item As $B~\backslash~B=\emptyset$, this gives $A\cup\emptyset\rightarrow C=A\rightarrow C$
+\end{enumerate}
+As we are able to derive the Armstrong axioms using only FD1-FD4, this means that FD1-FD4 are complete.
+
+\newpage
+
 \subsubsection{}
+In order for the four inference rules to be independent, we must not be able to derive any rule from another rule.
+\paragraph{FD1}
+As FD1 gives $x\rightarrow x$ from attribute $x$. As this is a trivial dependency, and the only one to give a relation to an attribute to itself, this cannot be derived from any other FD.
+\paragraph{FD2}
+FD2 is the only FD to combine FDs. This simulates Union and Augmentation. As no other FD has this same capability, it is unable to be derived from any other FD.
+\paragraph{FD3}
+FD3 functions by creating a dependency to chain dependencies. This functions similar to transitivity. This is unable to be derived from FD2 due to the fact that it's more of a transitivity like behaviour, whereas FD2 is more of a Union behaviour. As they are functionally serve different purposes, they are unable to derive one another.
+\paragraph{FD4}
+FD4 uses subset relations to derive a functional dependency. This functions similar to a reflexivity. As it is the only FD top contain a subset relation, it could not be derived using any other FD.
+
+As all of the FDs function differently with different purposes, they are unable to be constructed using the other FDs. This means that FD1-FD4 rules are independent
 \subsubsection{}
 
 \section{}
