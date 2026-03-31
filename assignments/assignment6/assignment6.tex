@@ -279,10 +279,22 @@ FD2 is the only FD to combine FDs. This simulates Union and Augmentation. As no 
 \paragraph{FD3}
 FD3 functions by creating a dependency to chain dependencies. This functions similar to transitivity. This is unable to be derived from FD2 due to the fact that it's more of a transitivity like behaviour, whereas FD2 is more of a Union behaviour. As they are functionally serve different purposes, they are unable to derive one another.
 \paragraph{FD4}
-FD4 uses subset relations to derive a functional dependency. This functions similar to a reflexivity. As it is the only FD top contain a subset relation, it could not be derived using any other FD.
-
+FD4 uses subset relations to derive a functional dependency. This functions similar to a reflexivity. As it is the only FD top contain a subset relation, it could not be derived using any other FD.\\[1.5em]
 As all of the FDs function differently with different purposes, they are unable to be constructed using the other FDs. This means that FD1-FD4 rules are independent
 \subsubsection{}
+\begin{center}
+    If $A\rightarrow B$ and $C\rightarrow D$ with $A\subseteq C$, then $(C~\backslash~B)\rightarrow D$
+\end{center}
+\begin{enumerate}
+    \item We will choose $A=\{a\}$, $B=\{a,b\}$, $C=\{a,c\}$, $D=\{d\}$
+    \item Consider relation between two tuples $\tau_1=\langle a:1,b:1,c:1,d:2\rangle $ and $\tau_2=\langle a:2,b:2,c:1,d:3\rangle $
+    \item As $A=\{a\}$ and $C=\{a,c\}$, $A\subseteq C$ holds trivially
+    \item As $a\rightarrow a,b$ is distinct in each tuple, $A\rightarrow B$ holds
+    \item As $a,c\rightarrow d$ is distinct in each tuple, $C\rightarrow D$ holds
+    \item $C~\backslash~B$ results in $c\rightarrow d$. The tuples $\tau_1$ and $\tau_2$ agree on $c$ while disagreeing on $d$. This means the relation does not satisfy $(C~\backslash~B)\rightarrow D$
+\end{enumerate}
+
+\newpage
 
 \section{}
 \subsection{}
@@ -294,5 +306,23 @@ As all of the FDs function differently with different purposes, they are unable 
 \begin{enumerate}
     \item Assume $\tau\in\mathfrak{I}(\textbf{R})$
     \item Using \textit{ID-Projection}, there exists $\tau'\in\mathfrak{I}(\textbf{S})$ such that $\tau[A]=\tau'[C]\land\tau[B]=\tau'[D]$
+    \item As $\tau'\in\mathfrak{I}(\textbf{S})$, Then $\tau'[C]$ is a value in $\textbf{S}[C]$
+    \item As $\tau'[C]\in\textbf{S}[C]$, and $\textbf{S}[C]\subseteq\textbf{R}[B]$, then $\tau'[C]\in\textbf{R}[B]$. This means that there exists some $\tau''\in\mathfrak{I}(\textbf{R})$ such that $\tau''[B]=\tau'[C]$
+    \item Furthermore, using \textit{ID-Projection} again, There exists a $\tau'''\in\mathfrak{I}(\textbf{S})$ such that $\tau''[A]=\tau'''[C]\land\tau''[B]=\tau'''[D]$
+    \item As we defined $\tau''[B]=\tau'[C]$, then $\tau'[C]=\tau'''[D]$
+    \item As we defined $\tau'[C]=\tau[A]$, then $\tau[A]=\tau'''[D]$, meaning that ID1 is sound as $\tau[A]\in\textbf{S}[D]$, and subsequently $\textbf{R}[A]\subseteq\textbf{S}[D]$
 \end{enumerate}
+\subsubsection{}
+\begin{center}
+    If $\textbf{R}[A]\subseteq\textbf{R}[B]$ and $\textbf{R}[A]\subseteq\textbf{S}[C]$, then $\textbf{R}[B]\subseteq\textbf{S}[C]$
+\end{center}
+\begin{enumerate}
+    \item Let $\textbf{R}[A]=\{1,2\},~\textbf{R}[B]=\{1,2,3\},~\textbf{S}[C]=\{1,2\}$
+    \item As $\{1,2\}\subseteq\{1,2,3\}$ and $\{1,2,3\}\subseteq\{1,2,3\}$, our premises hold true
+    \item As $\{1,2,3\}\subseteq\{1,2\}$ is false, this means that our ID does not hold by counterexample
+\end{enumerate}
+\subsubsection{}
+\begin{center}
+    If $\textbf{R}[A]\subseteq\textbf{S}[B]$, $\textbf{R}[C]\subseteq\textbf{S}[D]$, and $A\rightarrow C$, then $B\rightarrow D$
+\end{center}
 \end{document}
