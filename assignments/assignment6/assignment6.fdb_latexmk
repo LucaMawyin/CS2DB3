@@ -1,5 +1,5 @@
 # Fdb version 4
-["pdflatex"] 1774998905.97707 "c:/Users/lucam/Desktop/2DB3/assignments/assignment6/assignment6.tex" "assignment6.pdf" "assignment6" 1774998906.99118 0
+["pdflatex"] 1775013878.9919 "c:/Users/lucam/Desktop/2DB3/assignments/assignment6/assignment6.tex" "assignment6.pdf" "assignment6" 1775013879.97453 0
   "C:/Users/lucam/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map" 1771804424 80909 eab91d9745dd2edfd62a31d53cd5fe15 ""
   "C:/Users/lucam/AppData/Local/MiKTeX/miktex/data/le/pdftex/pdflatex.fmt" 1758769530 13286966 56cf3831de8057cd5a3c8f37e0be2756 ""
   "C:/Users/lucam/AppData/Local/Programs/MiKTeX/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1233951848 1004 54797486969f23fa377b128694d548df ""
@@ -32,6 +32,7 @@
   "C:/Users/lucam/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy7.pfb" 1247596666 32716 08e384dc442464e7285e891af9f45947 ""
   "C:/Users/lucam/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmti10.pfb" 1247596667 37944 359e864bd06cde3b1cf57bb20757fb06 ""
   "C:/Users/lucam/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/euler/eufm10.pfb" 1335366146 21098 d4aee7c0aac232caac5688b586b9363c ""
+  "C:/Users/lucam/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/symbols/msam10.pfb" 1247596673 31764 459c573c03a4949a528c2cc7f557e217 ""
   "C:/Users/lucam/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/symbols/msbm10.pfb" 1247596673 34694 870c211f62cb72718a00e353f14f254d ""
   "C:/Users/lucam/AppData/Local/Programs/MiKTeX/tex/context/base/mkii/supp-pdf.mkii" 1580390158 71627 94eb9990bed73c364d7f53f960cc8c5b ""
   "C:/Users/lucam/AppData/Local/Programs/MiKTeX/tex/generic/bigintcalc/bigintcalc.sty" 1576433602 40635 c40361e206be584d448876bba8a64a3b ""
@@ -211,10 +212,10 @@
   "C:/Users/lucam/AppData/Local/Programs/MiKTeX/tex/latex/translations/translations.sty" 1644048522 44247 2188b95d0ee74e31eca4d316263c58a7 ""
   "C:/Users/lucam/AppData/Local/Programs/MiKTeX/tex/latex/url/url.sty" 1388490452 12796 8edb7d69a20b857904dd0ea757c14ec9 ""
   "C:/Users/lucam/AppData/Local/Programs/MiKTeX/tex/latex/xcolor/xcolor.sty" 1729265222 55384 b454dec21c2d9f45ec0b793f0995b992 ""
-  "assignment6.aux" 1774998906 2960 d37a9729ff8c29345a9f40d18213b91e "pdflatex"
-  "assignment6.out" 1774998906 1029 ebd635826859cf7da9b79e6e6afab0d4 "pdflatex"
-  "assignment6.tex" 1774998905 17567 e30bb728661b6b83dedc490fce3bfddf ""
-  "c:/Users/lucam/Desktop/2DB3/assignments/assignment6/assignment6.tex" 1774998905 17567 e30bb728661b6b83dedc490fce3bfddf ""
+  "assignment6.aux" 1775013879 3308 357c0da0ca50041aca9aa075668d1ba4 "pdflatex"
+  "assignment6.out" 1775013879 1209 6982b4ea03e9aa2a8b15be834c9fc429 "pdflatex"
+  "assignment6.tex" 1775013878 20240 87095d350bdd1f42fb5a7d829b639724 ""
+  "c:/Users/lucam/Desktop/2DB3/assignments/assignment6/assignment6.tex" 1775013878 20240 87095d350bdd1f42fb5a7d829b639724 ""
   (generated)
   "assignment6.aux"
   "assignment6.log"

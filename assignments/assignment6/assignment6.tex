@@ -319,10 +319,47 @@ As all of the FDs function differently with different purposes, they are unable 
 \begin{enumerate}
     \item Let $\textbf{R}[A]=\{1,2\},~\textbf{R}[B]=\{1,2,3\},~\textbf{S}[C]=\{1,2\}$
     \item As $\{1,2\}\subseteq\{1,2,3\}$ and $\{1,2,3\}\subseteq\{1,2,3\}$, our premises hold true
-    \item As $\{1,2,3\}\subseteq\{1,2\}$ is false, this means that our ID does not hold by counterexample
+    \item As $\{1,2,3\}\subseteq\{1,2\}$ is false, this means that our ID2 does not hold by counterexample
 \end{enumerate}
 \subsubsection{}
 \begin{center}
     If $\textbf{R}[A]\subseteq\textbf{S}[B]$, $\textbf{R}[C]\subseteq\textbf{S}[D]$, and $A\rightarrow C$, then $B\rightarrow D$
 \end{center}
+\begin{enumerate}
+    \item Let $A=\{a\},~B=\{b\},~C=\{c\},~D=\{d\}$
+    \item Let $\textbf{R}$ contain the tuples $\langle a:1,c:10 \rangle$ and $\langle a:2,c:20 \rangle$
+    \item Let $\textbf{S}$ contain the tuples $\langle b:1,d:10 \rangle$, $\langle b:1,d:20 \rangle$ and $\langle b:2,d:20 \rangle$
+    \item As both $\textbf{R}[A]=\{1,2\}$ and $\textbf{S}[B]=\{1,2\}$, then $\textbf{R}[A]\subseteq\textbf{S}[B]$ holds trivially
+    \item As both $\textbf{R}[C]=\{10,20\}$ and $\textbf{S}[D]=\{10,20\}$, then $\textbf{R}[C]\subseteq\textbf{S}[D]$ holds trivially
+    \item Furthermore, as values of $a$ are distinct and determines a value of $c$, $A\rightarrow C$ holds
+    \item Because for the same value $b$, there are distinct values of $d$, $B\rightarrow D$ does not hold for ID+FD by counterexample
+\end{enumerate}
+\subsubsection{}
+\begin{center}
+    If $B\subseteq A$, then $AC\twoheadrightarrow \overline{AB}C$
+\end{center}
+\begin{enumerate}
+    \item Using axiom \textit{MV-Reflexivity}, because $B\subseteq A$, then $A\twoheadrightarrow B$
+    \item Using axiom \textit{MV-Complementation}, because $A\twoheadrightarrow B$, then $A\twoheadrightarrow \overline{AB}$
+    \item Using axiom \textit{MV-Augmentation}, where $A=A$ and $B=\overline{AB}$, because $A\twoheadrightarrow B$, then $AC\twoheadrightarrow BC$. Substituting the values we are given $AC\twoheadrightarrow \overline{AB}C$
+\end{enumerate}
+\subsubsection{}
+\begin{center}
+    If $A\twoheadrightarrow B$ and $C\twoheadrightarrow D$, with $C\subseteq B$, then $A\twoheadrightarrow D$
+\end{center}
+\begin{enumerate}
+    \item Using axiom \textit{MV-Reflexivity}, because $C\subseteq B$, then $B\twoheadrightarrow C$
+    \item Using axiom \textit{MV-Transitivity}, because $A\twoheadrightarrow B$ and $B\twoheadrightarrow C$, then $A\twoheadrightarrow C~\backslash~B$
+    \item As $C\subseteq B$, this means that $C~\backslash~B=\emptyset$, which means $A\twoheadrightarrow \emptyset$
+\end{enumerate}
+\subsubsection{}
+\begin{center}
+    If $A\twoheadrightarrow B$ and $C\rightarrow D$, with $C\subseteq B$, then $A\twoheadrightarrow (D~\backslash~B)$
+\end{center}
+\begin{enumerate}
+    \item Using \textit{Reflexivity}, because $C\subseteq B$, then $B\rightarrow C$
+    \item Using \textit{Transitivity}, because $B\rightarrow C$, and $C\rightarrow D$, then $B\rightarrow D$
+    \item Using \textit{Replication}, because $B\rightarrow D$, then $B\twoheadrightarrow D$
+    \item Using \textit{MV-Transitivity}, because $A\twoheadrightarrow B$, and $B\twoheadrightarrow D$, then $A\twoheadrightarrow (D~\backslash~B)$, meaning our rule is sound
+\end{enumerate}
 \end{document}
