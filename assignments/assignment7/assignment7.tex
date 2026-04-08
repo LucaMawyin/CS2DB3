@@ -1,0 +1,301 @@
+%% Determines the type of document (including standard settings for layout).
+\documentclass[letterpaper]{article}
+
+
+
+%% Package to control the size of a page: the standard margins used by LaTeX are
+%% very wide!
+\usepackage[margin=1in]{geometry}
+
+
+%% Packages add functionality to the document. The AMS packages are standard
+%% packages to support various mathematical notations. AMS stands for American
+%% Mathematical Society, the organization that maintains these packages.
+\usepackage{amsmath,amsthm,amssymb}
+
+%% Theorems-like environments using functionality provided by amsthm.
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+    %% [section] at the end specifies that theorems should be numbered
+    %% per-section: Section x starts with theorem-like x.1 and so on, ...
+\newtheorem{proposition}[theorem]{Proposition}
+    %% [theorem] in the middle specifies: use the same counter as the theorem
+    %% environment: here we number all theorem-like environments consecutively.
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{remark}[theorem]{Remark}
+
+
+%% Support for nicely formatted tables.
+\usepackage{booktabs}
+
+
+%% Support for colors & colors in tables.
+\usepackage[table]{xcolor}
+
+% Seven colors safe for use color blindness.
+% Colors taken from doi:10.1038/nmeth.1618.
+\definecolor{cbOrange}{RGB}{230,159,0}
+\definecolor{cbSkyBlue}{RGB}{86,180,233}
+\definecolor{cbBluishGreen}{RGB}{0,158,115}
+\definecolor{cbYellow}{RGB}{240,228,66}
+\definecolor{cbBlue}{RGB}{0,114,178}
+\definecolor{cbVermillion}{RGB}{213,94,0}
+\definecolor{cbReddischPurple}{RGB}{204,121,167}
+
+
+%% Notation used in this document.
+\newcommand{\n}{\mathbf{n}} %% Num. Replicas.
+\newcommand{\f}{\mathbf{f}} %% Num. Faulty Replicas.
+
+%% Misc. Math notation.
+\newcommand{\BigO}{\mathcal{O}}
+\newcommand{\abs}[1]{\lvert #1 \rvert}
+\newcommand{\AName}[1]{\textsc{#1}}
+\newcommand{\Var}[1]{\texttt{#1}}
+
+
+%% Algorithms.
+\usepackage{algorithm}
+\usepackage[noend]{algorithmic}
+\newcommand{\GETS}{:=}
+
+
+%% Formatting SI-units.
+\usepackage{siunitx}
+\sisetup{per-mode=symbol}
+
+
+%% TikZ: for creating figures.
+\usepackage{tikz}
+
+%% Configuration for figures: Nicer arrows.
+\usetikzlibrary{arrows.meta}
+\tikzset{>=Stealth}
+
+
+%% pgfplots: drawing plots using TikZ.
+\usepackage{pgfplots}
+%% Configuration for plots: Use color-blind friendly colors.
+\pgfplotscreateplotcyclelist{cbSafeList}{
+    very thick,solid,cbOrange,every mark/.append style={solid},mark=*\\
+    very thick,solid,cbSkyBlue,every mark/.append style={solid},mark=*\\
+    very thick,solid,cbBluishGreen,every mark/.append style={solid},mark=*\\
+    very thick,solid,cbYellow,every mark/.append style={solid},mark=*\\
+    very thick,solid,cbBlue,every mark/.append style={solid},mark=*\\
+    very thick,solid,cbVermillion,every mark/.append style={solid},mark=*\\
+    very thick,solid,cbReddischPurple,every mark/.append style={solid},mark=*\\
+    very thick,solid,black,every mark/.append style={solid},mark=*\\
+}
+\pgfplotsset{
+    legend style={font=\small},
+    compat=1.16,
+    width=260pt,
+    height=140pt,
+    legend cell align=left,
+    xlabel near ticks,
+    ylabel near ticks,
+    every axis/.append style={
+        cycle list name=cbSafeList,
+        ymin=0,
+        enlargelimits=0.05,
+        mark size=1pt,
+        ylabel style={align=center},
+        xlabel style={align=center},
+        title style={align=center}
+    }
+}
+
+%% PgfplotsTable: loading data files to use with pgfplots.
+\usepackage{pgfplotstable}
+
+
+%% Support for hyperlinks and urls. The setting ``colorlinks'' sets how links
+%% are shown in the document (with a color, without underline). We put hyperref
+%% last---it has a tendency to break other packages when loaded before them.
+\usepackage[colorlinks]{hyperref}
+\usepackage{graphicx}
+\usepackage{pgffor}
+\usepackage{caption}
+\captionsetup[algorithm]{labelformat=empty, labelsep=none}
+\usepackage{tabularx}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{comment}
+
+
+
+\begin{document}
+
+%% First the meta-data of the doucment: title,
+
+\begin{titlepage}
+    \centering
+    \vspace*{3cm}
+    
+    {\Huge COMPSCI 2DB3 Assignment 7}\\[2cm]
+    
+    {\large Luca Mawyin}\\[0.5cm]
+    
+    {\large Dr. Jelle Hellings}\\[0.5cm]
+
+    {\large \today}\\[2cm]
+
+    {\Large McMaster University}
+
+    \vfill
+    \begin{flushleft}
+
+        {\large \textbf{Student Number: }400531739}\\[0.5cm]
+        {\large \textbf{MacID: }mawyinl}
+    \end{flushleft}
+
+\end{titlepage}
+
+\renewcommand{\thesection}{Part \Roman{section}}
+\renewcommand{\thesubsection}{Problem \arabic{section}}
+\renewcommand{\thesubsubsection}{P\arabic{section}.\arabic{subsubsection}}
+
+\section{}
+\subsection{}
+\begin{align*}
+    &\mathbf{R}(a,b,c,d,e,f)\\
+    &\mathbb{D}=\{a\to b,c,~c,d\to e,~d\to f,~f\to a,c,f\}
+\end{align*}
+
+\begin{algorithm}
+    \textbf{Algorithm} CLOSURE($\mathbb{D},~A$):
+    \begin{algorithmic}[1]
+        \STATE{\textit{result}~\GETS~$A$}
+        \WHILE{there exists a $X\to Y\in\mathbb{D}$ with $X\subseteq \textit{result}$ and $Y\nsubseteq \textit{result}$}
+            \STATE{\textit{result}~\GETS~$\textit{result}\cup Y$}
+        \ENDWHILE{}
+        \STATE{\textbf{end while}}
+        \RETURN{\textit{result}}
+    \end{algorithmic}
+\end{algorithm}
+
+\subsubsection{}
+\begin{enumerate}
+    \item $X=\{a,d\}$
+    \item $\textit{result}=\{a,d\}$
+    \item Use $a\to b,c$, as $a\in\textit{result}\land{Y\nsubseteq\textit{result}}$
+    \item $\textit{result}=\{a,b,c,d\}$
+    \item Use $c,d\to e$, as $c,d\in\textit{result}\land{Y\nsubseteq\textit{result}}$
+    \item $\textit{result}=\{a,b,c,d,e\}$
+    \item Use $d\to f$, as $d\in\textit{result}\land{Y\nsubseteq\textit{result}}$
+    \item $\textit{result}=\{a,b,c,d,e,f\}$
+    \item We have, among other things, $a,d\to f$
+\end{enumerate}
+\subsubsection{}
+\begin{enumerate}
+    \item $a\to b,c$
+    \item $d\to a,b,c,d,e,f$
+    \item $f\to a,b,c,f$
+    \item $a,f\to a,b,c,f$
+\end{enumerate}
+Only the function dependencies that meaningully rely on each other were counted. This means if key $\{b,c\}$ does not result in any dependencies, then it is not included. Furthermore, any pair that does not meaningfully contribute to another key is not included. For example, in pair $\{a,e\}$, as $e$ does not help in the dependency, the dependency is the same as $a$, and subsequently the pair is not included.
+
+As $d$ is a superkey, any set containing $d$ is also a superkey. This includes, but is not limited to sets such as $\{a,d\}$, $\{b,d\}$, $\{c,d\}$, etc. As $d$ is the only single attribute that can be used to identify all other attributes, this means that $d$ and only $d$ is a candidate key. Furthermore, as $d$ is required for attribute $e$, and no attribute $x$ nor set $X$ exists such that $x\to d$ or $X\to d$, any set that does not include $d$ will not be a superkey. 
+\newpage
+\subsubsection{}
+\begin{algorithm}
+    \textbf{Algorithm} MINIMALCOVER($\mathbb{D}$):
+    \begin{algorithmic}[1]
+        \STATE{\textit{result}~\GETS~$\{X\to y~|~(X\to Y\in\mathbb{D})\land (y\in Y)\}$}
+        \WHILE{$\mathbb{D}$ is not a minimal cover}
+            \IF{there exists a $X\to y\in \textit{result}$ that is redundant w.r.t. \textit{result}}
+                \STATE{\textit{result}~\GETS~$\textit{result}\backslash \{X\to y\}$}
+            \ELSIF{\{there exists a $X\to y\in \textit{result}$ with $a\in X$ superfluous w.r.t. \textit{result}\}}
+                \STATE{\textit{result}~\GETS~$(\textit{result}\backslash\{X\to y\})\cup\{X\backslash a \to y\}$}
+            \ENDIF{}
+            \STATE{\textbf{end if}}
+        \ENDWHILE{}
+        \STATE{\textbf{end while}}
+        \RETURN{\textit{result}}
+    \end{algorithmic}
+\end{algorithm}
+\begin{enumerate}
+    \item $\textit{result}=\{a\to b;~a\to c;~c,d\to e;~d\to f;~f\to a;~f\to c;~f\to f\}$
+    \item $f \to f$ is redundant, therefore remove
+    \item $\textit{result}=\{a\to b;~a\to c;~c,d\to e;~d\to f;~f\to a;~f\to c\}$
+    \item $f \to c$ is redundant as $f\to a$ and $a\to c$, therefore remove
+    \item $\textit{result}=\{a\to b;~a\to c;~c,d\to e;~d\to f;~f\to a;\}$
+    \item $c,d\to e$ is not redundant, therefore test if $c\to e$ or $d\to e$
+    \item As neither exists, we are left with $\textit{result}=\{a\to b;~a\to c;~c,d\to e;~d\to f;~f\to a\}$
+    \item As no other dependency is redundant, and each untested $X$ is a single attribute, each LHS is not redundant
+    \item We return $\textit{result}=\mathbb{D}'=\{a\to b;~a\to c;~c,d\to e;~d\to f;~f\to a\}$
+\end{enumerate}
+\subsubsection{}
+The relational schema \textbf{R} is not in 3NF. This is because to be in 3NF, every FD $A\to B\in\mathbb{D}^*$, $A$ must be a candidate key of \textbf{R}. However, the only candidate key in \textbf{R} is $d$, meaning there are other FDs where $A$ is not a candidate key, subsequently breaking the rule.\\[1em]
+Performing the for-loop at the start of the algorithm we get:
+\begin{align*}
+    \{a\}&: \textbf{S}_1(\underline{a},b,c);\\
+    \{d\}&: \textbf{S}_2(\underline{d},f);\\
+    \{f\}&: \textbf{S}_3(\underline{f},a);\\
+    \{c,d\}&: \textbf{S}_4(\underline{c},\underline{d},e);\\
+\end{align*}
+The condition of the while-loop does not hold for any pair of relations in $\textbf{S}_1,\ldots,\textbf{S}_4$. Furthermore, the condition of the if-statement does not hold. Therefore, we return: 
+\begin{align*}
+    \{a\}&: \textbf{S}_1(\underline{a},b,c);\\
+    \{d\}&: \textbf{S}_2(\underline{d},f);\\
+    \{f\}&: \textbf{S}_3(\underline{f},a);\\
+    \{c,d\}&: \textbf{S}_4(\underline{c},\underline{d},e);\\
+\end{align*}
+\newpage
+\noindent For each \textbf{S} we have the dependencies as follows:
+\begin{enumerate}[label=$\textbf{S}_\text{\arabic*}$]
+    \item $a\to b,c$
+    \item $d\to f$
+    \item $f\to a$
+    \item $c,d\to e$
+\end{enumerate}
+This decomposition is a lossless-join, as we can recover the original dependencies easily, and there were no additional dependencies added. Furthermore, the decomposition is dependency preserving, as every dependency appears in at least one relation.
+\subsubsection{}
+The relational schema \textbf{R} is not in BCNF. This is because to be in BCNF, every FD $A\to B\in\mathbb{D}^*$, $A$ must be a primary key of \textbf{R}. However, there exist some FDs such as $a\to b,c$, and as $a$ is not a primary key, this breaks the rule.\\[1em]
+First we initialize:
+\begin{align*}
+    \textit{result}=\{\textbf{R}\}\\
+\end{align*}
+Next, we perform the while-loop. The functional dependency $a\to b,c\in\mathbb{D}^*$ is a BCNF violation for \textbf{R}. Therefore we replace \textbf{R} by two relations $\textbf{S}_1$ and $\textbf{S}_2$:
+\begin{align*}
+    \textit{result}=\{&\textbf{S}_1(\underline{a},b,c);\\
+    &\textbf{S}_2(a,\underline{d},e,f)\}
+\end{align*}
+In $\textbf{S}_2$, the functional dependency $f\to a$ violates BCNF. Therefore we replace $\textbf{S}_2$ by two relations $\textbf{S}_{2,1}$ and $\textbf{S}_{2,2}$:
+\begin{align*}
+    \textit{result}=\{&\textbf{S}_1(\underline{a},b,c);\\
+    &\textbf{S}_{2,1}=(\underline{f},a);\\
+    &\textbf{S}_{2,2}(\underline{d},e,f)\}
+\end{align*}
+The decomposition is a lossless join, as each step of decomposition uses a dependency where the determinant is a key in one of the resulting relations. As such, each split is a lossless join. Furthermore, the decomposition is not dependency preserving, as we lose some dependencies that were implicit, such as $f\to b,c$ as $f\to a$ and $a\to b,c$. However, this decomposition cannot enforce the implicit dependency, and therefore is not dependency preserving.
+\subsubsection{}
+The relational schema \textbf{R} is not in 4NF . This is because for any FD $A\to B\in\mathbb{D}^*$ that holds on the schema \textbf{R}, it must satisfy $A\twoheadrightarrow B$. However, as $b$ is not a superkey, this violates 4NF.\\[1em]
+First, we initialize:
+\begin{align*}
+    \textit{result}=\{\textbf{R}\}\\
+\end{align*}
+Next, we perform the while-loop. the multivalued dependency $b\twoheadrightarrow c\in\mathbb{D}^*$ is a 4NF violation. We replace \textbf{R} by two relations $\textbf{S}_1$ and $\textbf{S}_2$:
+\begin{align*}
+    \textit{result}=\{&\textbf{S}_1(\underline{b},c)\\
+    &\textbf{S}_2(a,b,\underline{d},e,f)\}
+\end{align*}
+In $\textbf{S}_2$, $a\to b$ violates 4NF. We replace $\textbf{S}_2$ by two relations $\textbf{S}_{1,1}$ and $\textbf{S}_{2,2}$:
+\begin{align*}
+    \textit{result}=\{&\textbf{S}_1(\underline{b},c)\\
+    &\textbf{S}_{2,1}(\underline{a},b)\\
+    &\textbf{S}_{2,2}(a,\underline{d},e,f)\}
+\end{align*}
+In $\textbf{S}_{2,2}$, $f\to a$ violates 4NF. We replace $\textbf{S}_{2,2}$ by two relations $\textbf{S}_{2,2,1}$ and $\textbf{S}_{2,2,2}$:
+\begin{align*}
+    \textit{result}=\{&\textbf{S}_1(\underline{b},c)\\
+    &\textbf{S}_{2,1}(\underline{a},b)\\
+    &\textbf{S}_{2,2,1}(a,\underline{f})\\
+    &\textbf{S}_{2,2,2}(\underline{d},e,f)\}
+\end{align*}
+
+\end{document}
