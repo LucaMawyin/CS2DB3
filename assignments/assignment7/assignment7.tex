@@ -297,5 +297,69 @@ In $\textbf{S}_{2,2}$, $f\to a$ violates 4NF. We replace $\textbf{S}_{2,2}$ by t
     &\textbf{S}_{2,2,1}(a,\underline{f})\\
     &\textbf{S}_{2,2,2}(\underline{d},e,f)\}
 \end{align*}
-
+\section{}
+\subsection{}
+\subsubsection{}
+\begin{align*}
+    \mathbb{D}'=\{\textit{isbn}&\to \textit{imprint};\\
+    \textit{isbn}&\to \textit{btitle};\\
+    \textit{isbn}&\to \textit{year};\\
+    \textit{isbn}&\to \textit{edition};\\
+    \textit{isbn}&\to \textit{numrecipes};\\
+    \textit{imprint}&\to \textit{publisher};\\
+    \textit{imprint,btitle,year}&\to \textit{isbn};\\
+    \textit{imprint,btitle,edition}&\to \textit{isbn};\\
+    \textit{rid}&\to \textit{isbn};\\
+    \textit{rid}&\to \textit{rtitle};\\
+    \textit{rid}&\to \textit{rpage}\\
+    \textit{isbn,rtitle}&\to \textit{rid};\\
+    \textit{aid}&\to \textit{aname}\}
+\end{align*}
+The relational schema \textbf{BookInfo} is not in 3NF. This is because to be in 3NF, every FD $A\to B\in\mathbb{D}^*$, $A$ must be a candidate key of \textbf{BookInfo}. However, this is not the case.\\[1em]
+Performing the for-loop at the start of the algorithm we get:
+\begin{align*}
+    \textit{isbn}&: \textbf{S}_1 (\textit{\underline{isbn},imprint,btitle,year,edition,numrecipes});\\
+    \textit{imprint}&: \textbf{S}_2 (\textit{\underline{imprint},publisher});\\
+    \textit{imprint,btitle,year}&: (\textbf{S}_3 \textit{\underline{imprint},\underline{btitle},\underline{year},isbn});\\
+    \textit{imprint,btitle,edition}&: \textbf{S}_4 (\textit{\underline{imprint},\underline{btitle},\underline{{edition}},isbn});\\
+    \textit{rid}&: \textbf{S}_5 (\textit{\underline{rid},isbn,rtitle,rpage});\\
+    \textit{isbn,rtitle}&: \textbf{S}_6 (\underline{isbn},\underline{rtitle},rid);\\
+    \textit{aid}&: \textbf{S}_7 (\underline{aid},aname)
+\end{align*}
+After the while loop we will remove $\textbf{S}_6$, $\textbf{S}_3$, and $\textbf{S}_4$:
+\begin{align*}
+    \textit{isbn}&: \textbf{S}_1 (\textit{\underline{isbn},imprint,btitle,year,edition,numrecipes});\\
+    \textit{imprint}&: \textbf{S}_2 (\textit{\underline{imprint},publisher});\\
+    \textit{rid}&: \textbf{S}_5 (\textit{\underline{rid},isbn,rtitle,rpage});\\
+    \textit{aid}&: \textbf{S}_7 (\underline{aid},aname)
+\end{align*}
+Next we will add the relation
+\begin{align*}
+    \text{candidate key}&:\textbf{S}_8(\underline{isbn},\underline{rid},\underline{aid})
+\end{align*}
+This decomposition is a lossless-join as there exists a relation which contains a key of the original schema. As we have candidate key $\textbf{S}_8$, this holds true. Furthermore, the decomposition is dependency preserving, as we maintain the original dependencies of the relational schema.
+\subsubsection{}
+The relational schema \textbf{BookInfo} is not in BCNF. This is because to be in BCNF, every FD $A\to B\in\mathbb{D}^*$, $A$ must be a primary key of \textbf{BookInfo}. However, this does not hold, as we have some keys that are not primary keys that still exist within out schema.\\[1em]
+First we initialize:
+\begin{align*}
+    \textit{result}&=\{\textbf{BookInfo}\}
+\end{align*}
+Next, we perform the while loop. The FD $\textit{isbn}\to\textit{publisher,imprint,btitle,year,edition,numrecipes}\in\mathbb{D}^*$ is a BCNF violation for \textbf{BookInfo}. Hence, we replace \textbf{BookInfo} by two relations $\textbf{S}_1$ and $\textbf{S}_2$:
+\begin{align*}
+    \textit{result}=\{&\textbf{S}_1(\textit{\underline{isbn},publisher,imprint,btitle,year,edition,numrecipes}),\\
+    &\textbf{S}_2(\textit{isbn,\underline{rid},rtitle,rpage,\underline{aid},aname})\}
+\end{align*}
+In $\textbf{S}_2$ we have BCNF violation $\textit{rid}\to\textit{isbn,rtitle,rpage}\in\mathbb{D}^*$. Therefore we replace $\textbf{S}_2$ by relations $\textbf{S}_{2,1}$ and $\textbf{S}_{2,2}$:
+\begin{align*}
+    \textit{result}=\{&\textbf{S}_1(\textit{\underline{isbn},publisher,imprint,btitle,year,edition,numrecipes}),\\
+    &\textbf{S}_{2,1}(\textit{\underline{rid},isbn,rtitle,rpage});\textbf{S}_{2,2}(\textit{\underline{isbn},\underline{aid},aname})\}
+\end{align*}
+In $\textbf{S}_{2,2}$ we have violation $\textit{aid}\to\textit{aname}\in\mathbb{D}^*$. We will replace $\textbf{S}_{2,2}$ by $\textbf{S}_{2,2,1}$ and $\textbf{S}_{2,2,2}$:
+\begin{align*}
+    \textit{result}=\{&\textbf{S}_1(\textit{\underline{isbn},publisher,imprint,btitle,year,edition,numrecipes}),\\
+    &\textbf{S}_{2,1}(\textit{\underline{rid},isbn,rtitle,rpage});\\
+    &\textbf{S}_{2,2,1}(\textit{\underline{aid},aname})\\
+    &\textbf{S}_{2,2,2}(\textit{\underline{isbn},aid})\}
+\end{align*}
+This decomposition is lossless-join, as every step performed is lossless. This is because for some arbitrary relations $\textbf{S}_1$ and $\textbf{S}_2$, we will have $\textbf{S}_1\cap\textbf{S}_2=X$, where $X$ is our original schema. Furthermore, the decomposition also dependency-preserving, as we can enforce every FD in $\mathbb{D}^*$ using only the decomposed relations
 \end{document}

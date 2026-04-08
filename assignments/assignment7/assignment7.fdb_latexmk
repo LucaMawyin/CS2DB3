@@ -1,6 +1,6 @@
 # Fdb version 4
-["pdflatex"] 1775619301.84539 "/Users/lucamawyin/Desktop/CS2DB3/assignments/assignment7/assignment7.tex" "assignment7.pdf" "assignment7" 1775619302.75395 0
-  "/Users/lucamawyin/Desktop/CS2DB3/assignments/assignment7/assignment7.tex" 1775619301.63765 12972 136cb6020a54a3cfa72db7be26abadc1 ""
+["pdflatex"] 1775658530.98297 "/Users/lucamawyin/Desktop/CS2DB3/assignments/assignment7/assignment7.tex" "assignment7.pdf" "assignment7" 1775658531.96661 0
+  "/Users/lucamawyin/Desktop/CS2DB3/assignments/assignment7/assignment7.tex" 1775658530.7464 17684 5d62d78ed7889cb6fcd5d31c50b69226 ""
   "/usr/local/texlive/2026/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/local/texlive/2026/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1246382020 1004 54797486969f23fa377b128694d548df ""
   "/usr/local/texlive/2026/texmf-dist/fonts/tfm/public/amsfonts/symbols/msam10.tfm" 1246382020 916 f87d7c45f9c908e672703b83b72241a3 ""
@@ -214,9 +214,9 @@
   "/usr/local/texlive/2026/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1774467206 5573038 b99aad5e4898a9034e953632f940512b ""
   "/usr/local/texlive/2026/texmf-var/web2c/pdftex/pdflatex.fmt" 1774209607 3636776 dc5fa9b6b1453b9d196cd42edf876004 ""
   "/usr/local/texlive/2026/texmf.cnf" 1774209515 577 648cd9f92f9c0eac486f4c71c85cfbbe ""
-  "assignment7.aux" 1775619302.67918 1073 31133be828fa7fc286f83863d51ae3ca "pdflatex"
-  "assignment7.out" 1775619302.67966 438 5967e813892a4d2c9e9d45c1e1f4592c "pdflatex"
-  "assignment7.tex" 1775619301.63765 12972 136cb6020a54a3cfa72db7be26abadc1 ""
+  "assignment7.aux" 1775658531.88788 1521 f9f1b6a0731f1b51ee070b294907aa3e "pdflatex"
+  "assignment7.out" 1775658531.88833 643 658eff752170bb1a2b3b092c424a2bcf "pdflatex"
+  "assignment7.tex" 1775658530.7464 17684 5d62d78ed7889cb6fcd5d31c50b69226 ""
   (generated)
   "assignment7.aux"
   "assignment7.log"
